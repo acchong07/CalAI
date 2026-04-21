@@ -13,6 +13,7 @@ class DailyTracker extends StatefulWidget {
   final double fat;
 
   const DailyTracker({
+    super.key,
     required this.calories,
     required this.protein,
     required this.carbs,
@@ -41,7 +42,7 @@ class _DailyTrackerState extends State<DailyTracker> {
 
   @override
   Widget build(BuildContext context) {
-    final targetCalories = userData?.estimatedCalories?.toDouble() ?? 2000.0;
+    final targetCalories = userData?.estimatedCalories.toDouble() ?? 2000.0;
 
     return Container(
       padding: EdgeInsets.all(16),

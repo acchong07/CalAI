@@ -1,11 +1,10 @@
+import 'package:cal_scanner/core/routes/router.dart';
+import 'package:go_router/go_router.dart';
+
 import 'data/repositories/food_repository.dart';
 import 'data/services/food_service.dart';
 import 'imports/imports.dart';
 import 'presentation/cubit/food_log_cubit.dart';
-import 'presentation/screens/home_screen.dart';
-import 'presentation/screens/onboarding_screen.dart';
-import 'presentation/screens/main_screen.dart';
-import 'presentation/screens/settings_screen.dart';
 import 'theme/theme.dart';
 
 Future<void> _loadEnvironmentFile() async {
@@ -13,35 +12,28 @@ Future<void> _loadEnvironmentFile() async {
     await dotenv.load(fileName: '.env');
   } catch (e) {
     debugPrint('Error loading .env file: $e');
-    // Provide a fallback or handle error as needed
   }
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await _loadEnvironmentFile();
 
-  // Initialize SharedPreferences
   final prefs = await SharedPreferences.getInstance();
   final showOnboarding = !(prefs.getBool('onboarding_complete') ?? false);
 
-  // Initialize services and repositories
   final foodService = FoodService();
   final foodRepository = FoodRepository(foodService, prefs);
+  final appRouter = AppRouter(showOnboarding: showOnboarding, prefs: prefs);
 
-  runApp(MyApp(showOnboarding: showOnboarding, foodRepository: foodRepository));
+  runApp(MyApp(router: appRouter.router, foodRepository: foodRepository));
 }
 
 class MyApp extends StatelessWidget {
-  final bool showOnboarding;
+  final GoRouter router;
   final FoodRepository foodRepository;
 
-  const MyApp({
-    super.key,
-    required this.showOnboarding,
-    required this.foodRepository,
-  });
+  const MyApp({super.key, required this.router, required this.foodRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -52,19 +44,11 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return BlocProvider(
           create: (context) => FoodLogCubit(foodRepository)..loadDailyLog(),
-          child: MaterialApp(
+          child: MaterialApp.router(
+            routerConfig: router,
             theme: buildLightTheme(primaryColorHex: '#6750A4'),
             debugShowCheckedModeBanner: false,
             title: 'Calorie Tracker',
-
-            home: showOnboarding ? OnboardingScreen() : MainScreen(),
-            routes: {
-              '/main': (context) => MainScreen(),
-              '/home': (context) => HomeScreen(),
-              '/onboarding': (context) => OnboardingScreen(),
-              '/settings': (context) => SettingsScreen(),
-              // Ensures `/home` route is defined
-            },
           ),
         );
       },

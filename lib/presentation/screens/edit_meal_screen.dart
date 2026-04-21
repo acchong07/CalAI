@@ -7,9 +7,9 @@ class EditMealScreen extends StatefulWidget {
   final FoodItem meal;
 
   const EditMealScreen({
-    Key? key,
+    super.key,
     required this.meal,
-  }) : super(key: key);
+  });
 
   @override
   State<EditMealScreen> createState() => _EditMealScreenState();

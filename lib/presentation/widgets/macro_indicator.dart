@@ -8,24 +8,18 @@ class MacroIndicator extends StatelessWidget {
   final Color color;
 
   const MacroIndicator({
-    Key? key,
+    super.key,
     required this.label,
     required this.value,
     required this.goal,
     required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
-          ),
-        ),
+        Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
         SizedBox(height: 4),
         LinearPercentIndicator(
           width: 80,
@@ -39,10 +33,7 @@ class MacroIndicator extends StatelessWidget {
         SizedBox(height: 4),
         Text(
           '${value.toInt()}/${goal.toInt()}g',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ],
     );

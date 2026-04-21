@@ -5,11 +5,7 @@ class MealListItem extends StatelessWidget {
   final FoodItem meal;
   final String timeAgo;
 
-  const MealListItem({
-    Key? key,
-    required this.meal,
-    required this.timeAgo,
-  }) : super(key: key);
+  const MealListItem({super.key, required this.meal, required this.timeAgo});
 
   @override
   Widget build(BuildContext context) {

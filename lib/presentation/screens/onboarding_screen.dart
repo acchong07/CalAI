@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/routes/app_routes.dart';
 import '../../core/utils/calorie_calculator.dart';
 import '../../data/local/preference_manager.dart';
 import '../../data/models/user_data.dart';
@@ -57,7 +59,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
 
     final userData = UserData(
       weight: weight!,
-      height: height!, // Added height
+      height: height!,
       age: age!,
       activityLevel: activityLevel!,
       gender: gender!,
@@ -68,10 +70,10 @@ class OnboardingScreenState extends State<OnboardingScreen> {
       carbsGoal: macroGoals['carbsGoal']!,
     );
 
-    final prefManager = PreferenceManager(
-      await SharedPreferences.getInstance(),
-    );
+    final prefs = await SharedPreferences.getInstance();
+    final prefManager = PreferenceManager(prefs);
     await prefManager.saveUserData(userData);
+    await prefs.setBool('onboarding_complete', true);
   }
 
   void _nextPage() {
@@ -84,12 +86,12 @@ class OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      Navigator.pushReplacementNamed(context, '/main');
+      context.go(AppRoutes.main);
     }
   }
 
   void _skipToMain() {
-    Navigator.pushReplacementNamed(context, '/main');
+    context.goNamed(AppRoutes.main);
   }
 
   Widget _buildPage(String title, String assetPath, Widget inputField) {

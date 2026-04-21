@@ -5,17 +5,16 @@ import '../screens/meal_detail_screen.dart';
 import '../cubit/food_log_cubit.dart';
 import 'meal_list_item.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
 class MealList extends StatelessWidget {
   final List<FoodItem> meals;
 
-  const MealList({
-    required this.meals,
-    Key? key,
-  }) : super(key: key);
+  const MealList({required this.meals, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final sortedMeals = List.of(meals)..sort((a, b) => b.timestamp.compareTo(a.timestamp));
+    final sortedMeals = List.of(meals)
+      ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
     return ListView.separated(
       shrinkWrap: true,

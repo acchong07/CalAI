@@ -1,12 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Named spacing constants aligned with an 8-pt grid.
-///
-/// Usage:
-/// ```dart
-/// SizedBox(height: AppSpacing.md)        // 16 pt gap
-/// Padding(padding: EdgeInsets.all(AppSpacing.lg))
-/// ```
 abstract final class AppSpacing {
   AppSpacing._();
 
@@ -65,4 +58,3 @@ abstract final class AppSpacing {
   /// Vertical gap between form fields.
   static double get formFieldGap => ms;
 }
-

@@ -1,46 +1,42 @@
+import 'package:cal_scanner/core/routes/app_routes.dart' show AppRoutes;
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
-import 'graph_screen.dart';
-import 'settings_screen.dart';
+import 'package:go_router/go_router.dart';
 
-class MainScreen extends StatefulWidget {
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
+class MainScreen extends StatelessWidget {
+  final Widget child;
 
-class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
-  final List<Widget> _screens = [
-    HomeScreen(),
-    GraphScreen(),
-    SettingsScreen(),
+  const MainScreen({super.key, required this.child});
 
+  // Map each route to its bottom nav index
+  static const List<String> _routes = [
+    AppRoutes.main,
+    AppRoutes.graph,
+    // AppRoutes.settings,
   ];
+
+  int _currentIndex(BuildContext context) {
+    final location = GoRouterState.of(context).matchedLocation;
+    final index = _routes.indexOf(location);
+    return index == -1 ? 0 : index; // default to 0 if not found
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: child,
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
+        currentIndex: _currentIndex(context),
+        onTap: (index) => context.goNamed(_routes[index]),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Progress',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.settings),
+          //   label: 'Settings',
+          // ),
         ],
       ),
     );

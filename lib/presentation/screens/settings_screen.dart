@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../core/routes/app_routes.dart' show AppRoutes;
 
 class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
   void _navigateToOnboarding(BuildContext context) {
-    Navigator.pushReplacementNamed(context, '/onboarding');
+    //context.go(AppRoutes.main);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-      ),
+      appBar: AppBar(title: Text('Settings')),
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
