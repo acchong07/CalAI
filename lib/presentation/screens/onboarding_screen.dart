@@ -1,3 +1,5 @@
+import 'package:cal_scanner/theme/app_colors.dart';
+import 'package:cal_scanner/theme/theme_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -90,10 +92,6 @@ class OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
-  void _skipToMain() {
-    context.goNamed(AppRoutes.main);
-  }
-
   Widget _buildPage(String title, String assetPath, Widget inputField) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -166,14 +164,20 @@ class OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       resizeToAvoidBottomInset:
           false, // Prevents keyboard from pushing up content
-      appBar: _currentPage == 0
-          ? AppBar(
-              automaticallyImplyLeading: false,
-              actions: [
-                TextButton(onPressed: _skipToMain, child: Text('Skip')),
-              ],
-            )
-          : null,
+      appBar: AppBar(
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(4.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: LinearProgressIndicator(
+              borderRadius: BorderRadius.circular(5),
+              value: (_currentPage + 1) / 7,
+              backgroundColor: AppColors.kLightGrey,
+              valueColor: AlwaysStoppedAnimation(AppColors.kBlack),
+            ),
+          ),
+        ),
+      ),
       body: PageView(
         controller: _pageController,
         physics: NeverScrollableScrollPhysics(),

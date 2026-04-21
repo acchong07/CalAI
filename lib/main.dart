@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
           create: (context) => FoodLogCubit(foodRepository)..loadDailyLog(),
           child: MaterialApp.router(
             routerConfig: router,
-            theme: buildLightTheme(primaryColorHex: '#6750A4'),
+            theme: buildLightTheme(),
             debugShowCheckedModeBanner: false,
             title: 'Calorie Tracker',
           ),

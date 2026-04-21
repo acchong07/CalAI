@@ -78,9 +78,17 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       info: Color.lerp(info, other.info, t)!,
       onInfo: Color.lerp(onInfo, other.onInfo, t)!,
       successContainer: Color.lerp(successContainer, other.successContainer, t),
-      onSuccessContainer: Color.lerp(onSuccessContainer, other.onSuccessContainer, t),
+      onSuccessContainer: Color.lerp(
+        onSuccessContainer,
+        other.onSuccessContainer,
+        t,
+      ),
       warningContainer: Color.lerp(warningContainer, other.warningContainer, t),
-      onWarningContainer: Color.lerp(onWarningContainer, other.onWarningContainer, t),
+      onWarningContainer: Color.lerp(
+        onWarningContainer,
+        other.onWarningContainer,
+        t,
+      ),
       infoContainer: Color.lerp(infoContainer, other.infoContainer, t),
       onInfoContainer: Color.lerp(onInfoContainer, other.onInfoContainer, t),
     );
@@ -105,22 +113,7 @@ class AppPalettes {
     infoContainer: Color(0xFF81D4FA),
     onInfoContainer: Color(0xFF01579B),
   );
-
-  static const dark = AppColorsExtension(
-    success: Color(0xFF81C784),
-    onSuccess: Color(0xFF003300),
-    successContainer: Color(0xFF1B5E20),
-    onSuccessContainer: Color(0xFFA5D6A7),
-    warning: Color(0xFFFFB74D),
-    onWarning: Color(0xFF5D4037),
-    warningContainer: Color(0xFFE65100),
-    onWarningContainer: Color(0xFFFFCC80),
-    info: Color(0xFF4FC3F7),
-    onInfo: Color(0xFF01579B),
-    infoContainer: Color(0xFF0277BD),
-    onInfoContainer: Color(0xFFE1F5FE),
-  );
 }
 
 /// Access semantic colors via `context.appColors` from `context_extension.dart`.
-/// Example: `context.appColors.success`
+/// Example: `context.appColors.success`

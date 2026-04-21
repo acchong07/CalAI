@@ -124,26 +124,12 @@ ThemeData _buildTheme(
   );
 }
 
-ThemeData buildLightTheme({required String primaryColorHex}) {
-  final seed = _colorFromHex(
-    primaryColorHex.isNotEmpty ? primaryColorHex : '#6750A4',
-  );
+ThemeData buildLightTheme() {
   final colorScheme = ColorScheme.fromSeed(
-    seedColor: seed,
+    seedColor: Color(0xfff9f6f1),
     brightness: Brightness.light,
   );
   return _buildTheme(colorScheme, AppPalettes.light);
-}
-
-ThemeData buildDarkTheme({required String primaryColorHex}) {
-  final seed = _colorFromHex(
-    primaryColorHex.isNotEmpty ? primaryColorHex : '#6750A4',
-  );
-  final colorScheme = ColorScheme.fromSeed(
-    seedColor: seed,
-    brightness: Brightness.dark,
-  );
-  return _buildTheme(colorScheme, AppPalettes.dark);
 }
 
 CupertinoThemeData buildCupertinoTheme({required String primaryColorHex}) {
