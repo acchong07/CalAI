@@ -1,4 +1,5 @@
 import 'package:cal_scanner/app_widgets/buttons/app_button.dart';
+import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:cal_scanner/features/onboarding/presentation/screens/onboarding/widgets/activity_widget.dart';
 import 'package:cal_scanner/features/onboarding/presentation/screens/onboarding/widgets/age_widget.dart';
@@ -25,13 +26,16 @@ class OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  void _nextPage() async {
-    if (_currentPage < 6) {
+  static const int _totalPages = 7;
+  static const int _lastPage = _totalPages - 1;
+
+  Future<void> _nextPage() async {
+    if (_currentPage < _lastPage) {
       if (_currentPage == 5) {
         await context.read<OnboardingCubit>().saveAndCalculate();
       }
       _pageController.nextPage(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     } else {
@@ -39,113 +43,83 @@ class OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
+  void _previousPage() {
+    _pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:
-          false, // Prevents keyboard from pushing up content
       appBar: AppBar(
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0),
-            child: LinearProgressIndicator(
-              borderRadius: BorderRadius.circular(5),
-              value: (_currentPage + 1) / 7,
-              backgroundColor: AppColors.kLightGrey,
-              valueColor: AlwaysStoppedAnimation(AppColors.kBlack),
-            ),
+          preferredSize: const Size.fromHeight(4.0),
+          child: Row(
+            children: [
+              Visibility(
+                visible: _currentPage != 0,
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: IconButton(
+                    onPressed: _previousPage,
+                    icon: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.kWhite,
+                        border: Border.all(color: AppColors.kgrey),
+                      ),
+                      child: const Icon(Icons.arrow_back),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: LinearProgressIndicator(
+                  borderRadius: BorderRadius.circular(5),
+                  value: (_currentPage + 1) / _totalPages,
+                  backgroundColor: AppColors.kLightGrey,
+                  valueColor: AlwaysStoppedAnimation(AppColors.kBlack),
+                ).paddingOnly(right: 40.0),
+              ),
+            ],
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20, top: 20),
-        child: PageView(
-          controller: _pageController,
-          physics: NeverScrollableScrollPhysics(),
-          onPageChanged: (index) => setState(() => _currentPage = index),
-          children: [
-            GenderWidget(),
-            AgeWidget(),
-
-            HeightWidget(),
-            WeightWidget(),
-            ActivityWidget(),
-
-            HealthGoalWidget(),
-            CalorieCalculationWidget(),
-          ],
-        ),
-      ),
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        onPageChanged: (index) => setState(() => _currentPage = index),
+        children: const [
+          GenderWidget(),
+          AgeWidget(),
+          HeightWidget(),
+          WeightWidget(),
+          ActivityWidget(),
+          HealthGoalWidget(),
+          CalorieCalculationWidget(),
+        ],
+      ).paddingOnly(left: 20.0, right: 20, top: 20),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(
-            left: 24,
-            right: 24,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-            top: 20,
+          padding: const EdgeInsets.all(20),
+          child: AppButton(
+            text: _currentPage == _lastPage ? 'Get Started' : 'Continue',
+            onTap: _nextPage,
           ),
-          child: AppButton(text: 'Continue', onTap: () {}),
         ),
       ),
     );
   }
-
-  // Widget _buildWelcomePage() {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(16.0),
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         Expanded(
-  //           flex: 7,
-  //           child: Image.asset(
-  //             'assets/onboarding/onboarding_welcome.png',
-  //             fit: BoxFit.cover,
-  //             width: double.infinity,
-  //           ),
-  //         ),
-  //         SizedBox(height: 16),
-  //         Expanded(
-  //           flex: 3,
-  //           child: Column(
-  //             children: [
-  //               Text(
-  //                 'Welcome to Calorie Lens!',
-  //                 style: Theme.of(context).textTheme.headlineMedium,
-  //                 textAlign: TextAlign.center,
-  //               ),
-  //               SizedBox(height: 16),
-  //               Card(
-  //                 child: Padding(
-  //                   padding: const EdgeInsets.all(16.0),
-  //                   child: Column(
-  //                     children: [
-  //                       Text(
-  //                         'Your Daily Calorie Target',
-  //                         style: TextStyle(
-  //                           fontSize: 16,
-  //                           fontWeight: FontWeight.bold,
-  //                         ),
-  //                       ),
-  //                       SizedBox(height: 8),
-  //                       Text(
-  //                         '$estimatedCalories kcal',
-  //                         style: TextStyle(
-  //                           fontSize: 24,
-  //                           fontWeight: FontWeight.bold,
-  //                           color: Theme.of(context).primaryColor,
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

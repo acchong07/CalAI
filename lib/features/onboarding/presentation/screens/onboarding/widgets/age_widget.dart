@@ -7,13 +7,19 @@ class AgeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      keyboardType: TextInputType.number,
-      onChanged: (value) {
-        final parsed = int.tryParse(value);
-        if (parsed != null) context.read<OnboardingCubit>().updateAge(parsed);
-      },
-      decoration: InputDecoration(labelText: 'Age in years'),
+    return Column(
+      children: [
+        TextField(
+          keyboardType: TextInputType.number,
+          onChanged: (value) {
+            final parsed = int.tryParse(value);
+            if (parsed != null) {
+              context.read<OnboardingCubit>().updateAge(parsed);
+            }
+          },
+          decoration: InputDecoration(labelText: 'Age in years'),
+        ),
+      ],
     );
   }
 }

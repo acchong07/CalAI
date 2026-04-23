@@ -1,4 +1,4 @@
-import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 
 class AppColors {
   static Color kScaffold = Color(0xfff9f6f1);
@@ -6,4 +6,5 @@ class AppColors {
 
   static Color kBlack = Color.fromARGB(196, 0, 0, 0);
   static Color kWhite = Color.fromARGB(255, 255, 255, 255);
+  static Color kgrey = Colors.grey;
 }
