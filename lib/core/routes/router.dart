@@ -1,5 +1,5 @@
 import 'package:cal_scanner/features/onboarding/presentation/screens/graph_screen.dart';
-import 'package:cal_scanner/features/onboarding/presentation/screens/splash.dart';
+import 'package:cal_scanner/features/onboarding/presentation/screens/onboarding/splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

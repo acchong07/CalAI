@@ -62,12 +62,13 @@ class OnboardingScreenState extends State<OnboardingScreen> {
         physics: NeverScrollableScrollPhysics(),
         onPageChanged: (index) => setState(() => _currentPage = index),
         children: [
-          WeightWidget(),
-          HeightWidget(),
-
-          AgeWidget(),
-          ActivityWidget(),
           GenderWidget(),
+          AgeWidget(),
+
+          HeightWidget(),
+          WeightWidget(),
+          ActivityWidget(),
+
           HealthGoalWidget(),
           CalorieCalculationWidget(),
         ],

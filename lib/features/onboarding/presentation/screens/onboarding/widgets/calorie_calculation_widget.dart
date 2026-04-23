@@ -1,6 +1,7 @@
 import 'package:cal_scanner/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:cal_scanner/features/onboarding/presentation/cubit/onboarding_state.dart';
 import 'package:cal_scanner/imports/imports.dart';
+import 'package:flutter/material.dart';
 
 class CalorieCalculationWidget extends StatelessWidget {
   const CalorieCalculationWidget({super.key});
