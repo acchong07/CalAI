@@ -45,7 +45,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
           false, // Prevents keyboard from pushing up content
       appBar: AppBar(
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(4.0),
+          preferredSize: const Size.fromHeight(1.0),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: LinearProgressIndicator(
@@ -57,21 +57,24 @@ class OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
       ),
-      body: PageView(
-        controller: _pageController,
-        physics: NeverScrollableScrollPhysics(),
-        onPageChanged: (index) => setState(() => _currentPage = index),
-        children: [
-          GenderWidget(),
-          AgeWidget(),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 20.0, right: 20, top: 20),
+        child: PageView(
+          controller: _pageController,
+          physics: NeverScrollableScrollPhysics(),
+          onPageChanged: (index) => setState(() => _currentPage = index),
+          children: [
+            GenderWidget(),
+            AgeWidget(),
 
-          HeightWidget(),
-          WeightWidget(),
-          ActivityWidget(),
+            HeightWidget(),
+            WeightWidget(),
+            ActivityWidget(),
 
-          HealthGoalWidget(),
-          CalorieCalculationWidget(),
-        ],
+            HealthGoalWidget(),
+            CalorieCalculationWidget(),
+          ],
+        ),
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(

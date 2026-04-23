@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'text_theme.dart';
 import 'color_schemes.dart';
 
 Color _colorFromHex(String hex) {
@@ -9,7 +8,6 @@ Color _colorFromHex(String hex) {
   return Color(int.parse('ff$cleaned', radix: 16));
 }
 
-/// Custom theme extension for spacing and other design tokens
 class AppDesignTokens extends ThemeExtension<AppDesignTokens> {
   const AppDesignTokens({
     required this.paddingSmall,
@@ -101,13 +99,11 @@ ThemeData _buildTheme(
   ColorScheme colorScheme,
   AppColorsExtension customColors,
 ) {
-  final textTheme = buildTextTheme();
-
   return ThemeData(
     useMaterial3: true,
     primaryColor: colorScheme.primary,
     colorScheme: colorScheme,
-    textTheme: textTheme,
+
     extensions: [customColors, AppDesignTokens.fallback],
     scaffoldBackgroundColor: colorScheme.surface,
     appBarTheme: AppBarTheme(
@@ -116,10 +112,6 @@ ThemeData _buildTheme(
       foregroundColor: colorScheme.onSurface,
       elevation: 0,
       centerTitle: true,
-      titleTextStyle: textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.w600,
-        color: colorScheme.onSurface,
-      ),
     ),
   );
 }

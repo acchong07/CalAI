@@ -1,4 +1,5 @@
 import 'package:cal_scanner/features/onboarding/presentation/cubit/onboarding_cubit.dart';
+import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,23 +10,34 @@ class GenderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<OnboardingCubit, OnboardingState>(
-      builder: (context, state) {
-        return DropdownButton<String>(
-          value: state.gender,
-          isExpanded: true,
-          hint: Text('Select Your Gender'),
-          items: [
-            'Male',
-            'Female',
-          ].map((g) => DropdownMenuItem(value: g, child: Text(g))).toList(),
-          onChanged: (value) {
-            if (value != null) {
-              context.read<OnboardingCubit>().updateGender(value);
-            }
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            'What is your\n biological sex',
+            style: AppTypography.headlineLarge,
+          ),
+        ),
+        BlocBuilder<OnboardingCubit, OnboardingState>(
+          builder: (context, state) {
+            return DropdownButton<String>(
+              value: state.gender,
+              isExpanded: true,
+              hint: Text('Select Your Gender'),
+              items: [
+                'Male',
+                'Female',
+              ].map((g) => DropdownMenuItem(value: g, child: Text(g))).toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<OnboardingCubit>().updateGender(value);
+                }
+              },
+            );
           },
-        );
-      },
+        ),
+      ],
     );
   }
 }

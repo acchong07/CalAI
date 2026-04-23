@@ -8,6 +8,7 @@ import 'features/onboarding/data/services/food_service.dart';
 import 'features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'imports/imports.dart';
 import 'features/onboarding/presentation/cubit/food_log_cubit.dart';
+import 'theme/app_typography.dart';
 import 'theme/theme.dart';
 
 Future<void> _loadEnvironmentFile() async {
@@ -55,7 +56,10 @@ class MyApp extends StatelessWidget {
 
           child: MaterialApp.router(
             routerConfig: router,
-            theme: buildLightTheme(),
+            theme: buildLightTheme().copyWith(
+              textTheme: AppTypography.textTheme,
+            ),
+
             debugShowCheckedModeBanner: false,
             title: 'Calorie Tracker',
           ),
