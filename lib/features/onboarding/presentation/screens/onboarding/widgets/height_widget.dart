@@ -1,3 +1,4 @@
+import 'package:cal_scanner/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:cal_scanner/imports/imports.dart';
 import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:cal_scanner/theme/app_typography.dart';
@@ -25,6 +26,16 @@ class _HeightWeightWidgetState extends State<HeightWeightWidget> {
   static const int _maxWeight = 200;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final height = double.parse('$_selectedFeet.$_selectedInches');
+      context.read<OnboardingCubit>().updateHeight(height);
+      context.read<OnboardingCubit>().updateWeight(_selectedWeight.toDouble());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +46,7 @@ class _HeightWeightWidgetState extends State<HeightWeightWidget> {
           "We'll use this for calorie calculations.",
           style: AppTypography.bodyMedium,
         ),
-        const SizedBox(height: 36),
+        const SizedBox(height: 60),
 
         Row(
           children: const [
@@ -59,7 +70,7 @@ class _HeightWeightWidgetState extends State<HeightWeightWidget> {
                 right: 0,
                 child: Center(
                   child: Container(
-                    height: 48,
+                    height: 45.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
@@ -86,8 +97,14 @@ class _HeightWeightWidgetState extends State<HeightWeightWidget> {
                         (i) => '${i + _minFeet}\'',
                       ),
                       initialIndex: _selectedFeet - _minFeet,
-                      onChanged: (i) =>
-                          setState(() => _selectedFeet = i + _minFeet),
+                      onChanged: (i) {
+                        final newFeet = i + _minFeet;
+                        setState(() => _selectedFeet = newFeet);
+                        final height = double.parse(
+                          '$newFeet.$_selectedInches',
+                        );
+                        context.read<OnboardingCubit>().updateHeight(height);
+                      },
                     ),
                   ),
                   // Inches
@@ -98,8 +115,14 @@ class _HeightWeightWidgetState extends State<HeightWeightWidget> {
                         (i) => '${i + _minInches}"',
                       ),
                       initialIndex: _selectedInches - _minInches,
-                      onChanged: (i) =>
-                          setState(() => _selectedInches = i + _minInches),
+                      onChanged: (i) {
+                        final newInches = i + _minInches;
+                        setState(() => _selectedInches = newInches);
+                        final height = double.parse(
+                          '$_selectedFeet.$newInches',
+                        );
+                        context.read<OnboardingCubit>().updateHeight(height);
+                      },
                     ),
                   ),
                   // Weight
@@ -110,8 +133,13 @@ class _HeightWeightWidgetState extends State<HeightWeightWidget> {
                         (i) => '${i + _minWeight} kg',
                       ),
                       initialIndex: _selectedWeight - _minWeight,
-                      onChanged: (i) =>
-                          setState(() => _selectedWeight = i + _minWeight),
+                      onChanged: (i) {
+                        final newWeight = i + _minWeight;
+                        setState(() => _selectedWeight = newWeight);
+                        context.read<OnboardingCubit>().updateWeight(
+                          newWeight.toDouble(),
+                        );
+                      },
                     ),
                   ),
                 ],

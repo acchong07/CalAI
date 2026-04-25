@@ -38,6 +38,14 @@ class _AgeWidgetState extends State<AgeWidget> {
   late final _yearCtrl = FixedExtentScrollController(initialItem: _year);
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _notify(); // sends default age to cubit immediately
+    });
+  }
+
+  @override
   void dispose() {
     _monthCtrl.dispose();
     _dayCtrl.dispose();

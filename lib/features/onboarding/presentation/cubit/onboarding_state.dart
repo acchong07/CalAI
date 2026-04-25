@@ -3,7 +3,7 @@ class OnboardingState {
   final double? height;
   final int? age;
   final String? activityLevel;
-  final String? gender;
+  final String gender;
   final String? userGoal;
   final int estimatedCalories;
 
@@ -12,7 +12,7 @@ class OnboardingState {
     this.height,
     this.age,
     this.activityLevel,
-    this.gender,
+    this.gender = 'Male',
     this.userGoal,
     this.estimatedCalories = 0,
   });

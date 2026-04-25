@@ -7,7 +7,6 @@ import 'package:cal_scanner/features/onboarding/presentation/screens/onboarding/
 import 'package:cal_scanner/features/onboarding/presentation/screens/onboarding/widgets/gender_widget.dart';
 import 'package:cal_scanner/features/onboarding/presentation/screens/onboarding/widgets/health_goal_widget.dart';
 import 'package:cal_scanner/features/onboarding/presentation/screens/onboarding/widgets/height_widget.dart';
-import 'package:cal_scanner/features/onboarding/presentation/screens/onboarding/widgets/weight_widget.dart';
 import 'package:cal_scanner/imports/packages_imports.dart';
 import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -26,20 +25,21 @@ class OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  static const int _totalPages = 7;
+  static const int _totalPages = 6;
   static const int _lastPage = _totalPages - 1;
 
   Future<void> _nextPage() async {
-    if (_currentPage < _lastPage) {
-      if (_currentPage == 5) {
+    if (_currentPage == _lastPage) {
+      context.go(AppRoutes.main);
+    } else {
+      if (_currentPage == _lastPage - 1) {
         await context.read<OnboardingCubit>().saveAndCalculate();
       }
+
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-    } else {
-      context.go(AppRoutes.main);
     }
   }
 
@@ -105,7 +105,6 @@ class OnboardingScreenState extends State<OnboardingScreen> {
           GenderWidget(),
           AgeWidget(),
           HeightWeightWidget(),
-          WeightWidget(),
           ActivityWidget(),
           HealthGoalWidget(),
           CalorieCalculationWidget(),

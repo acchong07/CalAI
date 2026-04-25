@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'onboarding_state.dart';
@@ -17,13 +18,31 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   void updateGoal(String value) => emit(state.copyWith(userGoal: value));
 
   Future<void> saveAndCalculate() async {
+    double heightToCm(double feetInches) {
+      final parts = feetInches.toString().split('.');
+      final feet = int.parse(parts[0]);
+      final inches = parts.length > 1 ? int.parse(parts[1]) : 0;
+      final totalInches = (feet * 12) + inches;
+      return totalInches * 2.54;
+    }
+
+    final heightInCm = heightToCm(state.height!);
+    debugPrint('heightInCm: $heightInCm');
+    debugPrint('weight: ${state.weight}');
+    debugPrint('age: ${state.age}');
+    debugPrint('activityLevel: ${state.activityLevel}');
+    debugPrint('gender: ${state.gender}');
+    debugPrint('goal: ${state.userGoal}');
+
     final maintenance = CalorieCalculator.fallbackEstimateCalories(
       weight: state.weight!,
-      height: state.height!,
+      height: heightInCm,
       age: state.age!,
       activityLevel: state.activityLevel!,
-      gender: state.gender!,
+      gender: state.gender,
     );
+
+    debugPrint('maintenance: $maintenance');
 
     final adjusted = CalorieCalculator.calculateCaloriesBasedOnGoal(
       maintenanceCalories: maintenance,
@@ -39,10 +58,10 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
     final userData = UserData(
       weight: state.weight!,
-      height: state.height!,
+      height: heightInCm,
       age: state.age!,
       activityLevel: state.activityLevel!,
-      gender: state.gender!,
+      gender: state.gender,
       goal: state.userGoal!,
       estimatedCalories: adjusted,
       proteinGoal: macros['proteinGoal']!,
