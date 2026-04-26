@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/models/food_item.dart';
-import '../../data/repositories/food_repository.dart';
+import '../../../calories/data/models/food_item.dart';
+import '../../../calories/data/repositories/food_repository.dart';
 
 class FoodLogState {
   final List<FoodItem> meals;

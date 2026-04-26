@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/models/food_item.dart';
+import '../../../calories/data/models/food_item.dart';
 import '../screens/meal_detail_screen.dart';
 import '../cubit/food_log_cubit.dart';
 import 'meal_list_item.dart';
