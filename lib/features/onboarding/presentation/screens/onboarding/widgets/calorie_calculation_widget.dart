@@ -41,8 +41,10 @@ class CalorieCalculationWidget extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Text(
-                'daily calories',
-                style: AppTypography.bodyMedium.copyWith(color: Colors.grey),
+                'Your Daily calories',
+                style: AppTypography.bodyLarge.copyWith(
+                  color: AppColors.kBlack.withValues(alpha: .6),
+                ),
               ),
             ),
             36.kH,
@@ -67,19 +69,19 @@ class CalorieCalculationWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _MacroItem(
-                    value: '${123}g',
+                    value: '${state.proteinGoal.toInt()}g',
                     label: 'Protein',
                     color: const Color(0xFF5B8DEF),
                   ),
                   _VerticalDivider(),
                   _MacroItem(
-                    value: '${123}g',
+                    value: '${state.carbsGoal.toInt()}g',
                     label: 'Carbs',
                     color: const Color(0xFFF5A623),
                   ),
                   _VerticalDivider(),
                   _MacroItem(
-                    value: '${123}g',
+                    value: '${state.fatGoal.toInt()}g',
                     label: 'Fat',
                     color: const Color(0xFFF5654A),
                   ),
@@ -123,13 +125,12 @@ class _MacroItem extends StatelessWidget {
       children: [
         Text(
           value,
-          style: TextStyle(
-            fontSize: 21.sp,
-            fontWeight: FontWeight.w800,
+          style: AppTypography.displaySmall.copyWith(
             color: color,
+            fontSize: 22.sp,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 10),
         Text(
           label,
           style: TextStyle(

@@ -33,7 +33,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
       context.go(AppRoutes.main);
     } else {
       if (_currentPage == _lastPage - 1) {
-        //await context.read<OnboardingCubit>().saveAndCalculate();
+        await context.read<OnboardingCubit>().saveAndCalculate();
       }
 
       _pageController.nextPage(

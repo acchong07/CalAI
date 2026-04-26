@@ -54,7 +54,14 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       goal: state.userGoal,
     );
 
-    emit(state.copyWith(estimatedCalories: adjusted));
+    emit(
+      state.copyWith(
+        estimatedCalories: adjusted,
+        proteinGoal: macros['proteinGoal']!.toDouble(),
+        fatGoal: macros['fatGoal']!.toDouble(),
+        carbsGoal: macros['carbsGoal']!.toDouble(),
+      ),
+    );
 
     final userData = UserData(
       weight: state.weight!,

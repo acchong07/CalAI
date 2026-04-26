@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
             ),
 
             debugShowCheckedModeBanner: false,
-            title: 'Calorie Tracker',
+            title: 'AI Calorie Tracker',
           ),
         );
       },

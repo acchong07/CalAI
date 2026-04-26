@@ -6,6 +6,10 @@ class OnboardingState {
   final String gender;
   final String userGoal;
   final int estimatedCalories;
+  // macros
+  final double proteinGoal;
+  final double fatGoal;
+  final double carbsGoal;
 
   const OnboardingState({
     this.weight,
@@ -15,6 +19,9 @@ class OnboardingState {
     this.gender = 'Male',
     this.userGoal = 'Weight Loss',
     this.estimatedCalories = 0,
+    this.proteinGoal = 0,
+    this.fatGoal = 0,
+    this.carbsGoal = 0,
   });
 
   OnboardingState copyWith({
@@ -25,6 +32,9 @@ class OnboardingState {
     String? gender,
     String? userGoal,
     int? estimatedCalories,
+    double? proteinGoal,
+    double? fatGoal,
+    double? carbsGoal,
   }) {
     return OnboardingState(
       weight: weight ?? this.weight,
@@ -34,6 +44,9 @@ class OnboardingState {
       gender: gender ?? this.gender,
       userGoal: userGoal ?? this.userGoal,
       estimatedCalories: estimatedCalories ?? this.estimatedCalories,
+      proteinGoal: proteinGoal ?? this.proteinGoal,
+      fatGoal: fatGoal ?? this.fatGoal,
+      carbsGoal: carbsGoal ?? this.carbsGoal,
     );
   }
 }
