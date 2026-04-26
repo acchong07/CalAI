@@ -1,3 +1,4 @@
+import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:cal_scanner/imports/imports.dart';
 import 'package:cal_scanner/theme/app_colors.dart';
@@ -146,7 +147,7 @@ class _HeightWeightWidgetState extends State<HeightWeightWidget> {
               ),
             ],
           ),
-        ),
+        ).paddingSymmetric(horizontal: 2.w),
 
         const SizedBox(height: 32),
 
@@ -236,7 +237,7 @@ class _ScrollPickerState extends State<_ScrollPicker> {
             child: AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 150),
               style: TextStyle(
-                fontSize: isSelected ? 20.h : 15.h,
+                fontSize: isSelected ? 18.h : 15.h,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
                 color: isSelected ? AppColors.kPureBlack : AppColors.kgrey,
                 height: 1,

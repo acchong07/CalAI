@@ -1,9 +1,9 @@
 import 'package:cal_scanner/core/extensions/num_extension.dart';
 import 'package:cal_scanner/features/onboarding/presentation/cubit/onboarding_cubit.dart';
+import 'package:cal_scanner/imports/imports.dart';
 import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AgeWidget extends StatefulWidget {
   const AgeWidget({super.key});
@@ -122,7 +122,7 @@ class _AgeWidgetState extends State<AgeWidget> {
           Align(
             alignment: Alignment.center,
             child: Container(
-              height: _itemExtent,
+              height: 45.h,
               margin: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(
                 color: AppColors.kWhite,
@@ -236,7 +236,7 @@ class _AgeWidgetState extends State<AgeWidget> {
             child: AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 180),
               style: TextStyle(
-                fontSize: isSelected ? 17 : 14,
+                fontSize: isSelected ? 17.h : 14,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                 color: isSelected
                     ? Theme.of(context).colorScheme.onSurface

@@ -38,7 +38,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       weight: state.weight!,
       height: heightInCm,
       age: state.age!,
-      activityLevel: state.activityLevel!,
+      activityLevel: state.activityLevel,
       gender: state.gender,
     );
 
@@ -46,12 +46,12 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
     final adjusted = CalorieCalculator.calculateCaloriesBasedOnGoal(
       maintenanceCalories: maintenance,
-      goal: state.userGoal!,
+      goal: state.userGoal,
     );
 
     final macros = CalorieCalculator.calculateMacroGoals(
       calories: adjusted,
-      goal: state.userGoal!,
+      goal: state.userGoal,
     );
 
     emit(state.copyWith(estimatedCalories: adjusted));
@@ -60,9 +60,9 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       weight: state.weight!,
       height: heightInCm,
       age: state.age!,
-      activityLevel: state.activityLevel!,
+      activityLevel: state.activityLevel,
       gender: state.gender,
-      goal: state.userGoal!,
+      goal: state.userGoal,
       estimatedCalories: adjusted,
       proteinGoal: macros['proteinGoal']!,
       fatGoal: macros['fatGoal']!,

@@ -2,18 +2,18 @@ class OnboardingState {
   final double? weight;
   final double? height;
   final int? age;
-  final String? activityLevel;
+  final String activityLevel;
   final String gender;
-  final String? userGoal;
+  final String userGoal;
   final int estimatedCalories;
 
   const OnboardingState({
     this.weight,
     this.height,
     this.age,
-    this.activityLevel,
+    this.activityLevel = 'Moderate',
     this.gender = 'Male',
-    this.userGoal,
+    this.userGoal = 'Weight Loss',
     this.estimatedCalories = 0,
   });
 

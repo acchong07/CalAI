@@ -18,7 +18,7 @@ class GenderWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'What is your\n biological sex',
+          'What is your\nbiological sex',
           style: AppTypography.headlineLarge,
         ),
         10.kH,
