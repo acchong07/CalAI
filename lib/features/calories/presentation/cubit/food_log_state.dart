@@ -45,6 +45,8 @@ class FoodLogState {
     File? selectedImage,
     bool? isScanning,
     FoodItem? scannedMeal,
+    bool clearScannedMeal = false, // <-- add this
+    bool clearError = false, // <-- and this
   }) {
     return FoodLogState(
       meals: meals ?? this.meals,
@@ -54,11 +56,11 @@ class FoodLogState {
       totalFat: totalFat ?? this.totalFat,
       weeklyData: weeklyData ?? this.weeklyData,
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
+      error: clearError ? null : error ?? this.error,
       successMessage: successMessage ?? this.successMessage,
       selectedImage: selectedImage ?? this.selectedImage,
       isScanning: isScanning ?? this.isScanning,
-      scannedMeal: scannedMeal ?? this.scannedMeal,
+      scannedMeal: clearScannedMeal ? null : scannedMeal ?? this.scannedMeal,
     );
   }
 }

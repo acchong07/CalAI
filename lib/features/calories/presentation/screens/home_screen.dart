@@ -1,6 +1,8 @@
 import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_cubit.dart';
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_state.dart';
+import 'package:cal_scanner/imports/imports.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -69,10 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
-                          onVisible: () => Future.delayed(
-                            Duration(seconds: 2),
-                            () => context.read<FoodLogCubit>().clearMessages(),
-                          ),
                         ),
                       );
                     }
@@ -92,10 +90,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             carbs: state.totalCarbs,
                             fat: state.totalFat,
                           ),
-                          SizedBox(height: 24),
-                          Text(
-                            'Meals',
-                            style: Theme.of(context).textTheme.titleMedium,
+                          SizedBox(height: 30.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Meals',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              Text(
+                                '${state.meals.length.toString()} items',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ],
                           ),
                           SizedBox(height: 16),
                           MealList(meals: state.meals),
@@ -111,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.read<FoodLogCubit>().pickAndScanImage(context),
-        child: Icon(Icons.add_a_photo),
+        child: Icon(CupertinoIcons.camera, size: 30.sp),
       ),
     );
   }
