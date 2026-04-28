@@ -22,7 +22,7 @@ class FoodLogCubit extends Cubit<FoodLogState> {
 
     final image = File(pickedFile.path);
     emit(state.copyWith(selectedImage: image, isScanning: true));
-
+    await Future.delayed(const Duration(milliseconds: 500));
     if (context.mounted) {
       Navigator.push(
         context,
@@ -38,12 +38,20 @@ class FoodLogCubit extends Cubit<FoodLogState> {
     await addMealFromImage(image);
   }
 
+  // fetch data view date
+
+  Future<void> selectDate(DateTime date) async {
+    final normalized = DateTime(date.year, date.month, date.day);
+
+    emit(state.copyWith(selectedDate: normalized));
+    await loadDailyLog();
+  }
+
   Future<void> loadDailyLog({FoodItem? preserveScannedMeal}) async {
     emit(state.copyWith(isLoading: true));
     try {
-      // Run today's log and weekly data in parallel — no more 7-sequential-awaits delay
       final results = await Future.wait([
-        _repository.getDailyFoodLog(DateTime.now()),
+        _repository.getDailyFoodLog(state.selectedDate),
         _loadWeeklyData(),
       ]);
 
@@ -165,5 +173,14 @@ class FoodLogCubit extends Cubit<FoodLogState> {
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
     }
+  }
+
+  // re-build the UI at midnight for changes if user has't restart the app or crashed
+
+  Future<void> refreshForNewDay() async {
+    final today = DateTime.now();
+    final normalized = DateTime(today.year, today.month, today.day);
+    emit(state.copyWith(selectedDate: normalized));
+    await loadDailyLog();
   }
 }

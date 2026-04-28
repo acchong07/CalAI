@@ -1,3 +1,4 @@
+import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/calories/presentation/screens/meal_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class MealList extends StatelessWidget {
       ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
     return ListView.separated(
+      padding: pagePadding,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemCount: sortedMeals.length,

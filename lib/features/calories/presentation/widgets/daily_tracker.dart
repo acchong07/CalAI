@@ -1,8 +1,10 @@
-import 'package:cal_scanner/imports/imports.dart';
+import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../onboarding/data/local/preference_manager.dart';
 import '../../../onboarding/data/models/user_data.dart';
@@ -48,16 +50,6 @@ class _DailyTrackerState extends State<DailyTracker> {
 
     return Column(
       children: [
-        // Container(
-        //   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        //   decoration: BoxDecoration(
-        //     color: Color(0xFFB8C7CB),
-        //     borderRadius: BorderRadius.circular(16),
-        //   ),
-        //   child: Text(
-        //     'Daily Calorie Goal: ${userData?.estimatedCalories ?? 2000} kcal',
-        //     style: TextStyle(fontWeight: FontWeight.bold),
-        //   ),
         // ),
         CircularPercentIndicator(
           backgroundColor: AppColors.kPrimaryGrey,
@@ -107,7 +99,7 @@ class _DailyTrackerState extends State<DailyTracker> {
               color: Colors.amber,
             ),
           ],
-        ),
+        ).paddingSymmetric(horizontal: 10),
       ],
     );
   }

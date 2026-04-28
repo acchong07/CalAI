@@ -1,9 +1,9 @@
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_cubit.dart';
+import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../calories/data/models/food_item.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'edit_meal_screen.dart';
 
 class MealDetailScreen extends StatelessWidget {
   final FoodItem meal;
@@ -34,27 +34,28 @@ class MealDetailScreen extends StatelessWidget {
     );
   }
 
-  void _editMeal(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EditMealScreen(meal: meal)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.kScaffold,
       appBar: AppBar(
         title: Text(meal.name, style: TextStyle(color: Colors.black)),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 1,
+        backgroundColor: AppColors.kScaffold,
         iconTheme: IconThemeData(color: Colors.black),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit, color: Colors.black),
-            onPressed: () => _editMeal(context),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.kWhite,
+              border: Border.all(color: AppColors.kgrey),
+            ),
+            child: const Icon(Icons.arrow_back),
           ),
+        ),
+        actions: [
           IconButton(
             icon: Icon(Icons.delete, color: Colors.red),
             onPressed: () => _deleteMeal(context),

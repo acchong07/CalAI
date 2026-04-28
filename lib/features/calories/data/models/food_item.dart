@@ -26,7 +26,8 @@ class FoodItem {
     required this.timestamp,
   });
 
-  factory FoodItem.fromJson(Map<String, dynamic> json) => _$FoodItemFromJson(json);
+  factory FoodItem.fromJson(Map<String, dynamic> json) =>
+      _$FoodItemFromJson(json);
   Map<String, dynamic> toJson() => _$FoodItemToJson(this);
 
   FoodItem copyWith({
@@ -39,7 +40,7 @@ class FoodItem {
     String? imageUrl,
   }) {
     return FoodItem(
-      id: this.id,
+      id: id,
       name: name ?? this.name,
       calories: calories ?? this.calories,
       protein: protein ?? this.protein,
@@ -47,7 +48,7 @@ class FoodItem {
       fat: fat ?? this.fat,
       quantity: quantity ?? this.quantity,
       imageUrl: imageUrl ?? this.imageUrl,
-      timestamp: this.timestamp,
+      timestamp: timestamp,
     );
   }
 }

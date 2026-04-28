@@ -1,7 +1,8 @@
 import 'dart:io';
+import 'package:cal_scanner/core/extensions/capital_first_extension.dart';
+import 'package:cal_scanner/core/extensions/num_extension.dart';
 import 'package:cal_scanner/core/extensions/widget_extension.dart';
-import 'package:cal_scanner/features/calories/presentation/widgets/daily_tracker.dart';
-import 'package:cal_scanner/imports/imports.dart';
+
 import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -95,39 +96,17 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.kScaffold,
+          appBar: AppBar(
+            backgroundColor: AppColors.kScaffold,
+            leading: IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () => Navigator.pop(context),
+            ),
+            centerTitle: false,
+          ),
           body: SafeArea(
             child: Column(
               children: [
-                // Top bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Icon(Icons.bookmark_border, color: Colors.black54),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Food image — always visible
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.file(
-                    widget.imageFile,
-                    height: 160,
-                    width: 160,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
                 // Error — use local _error, not state.error
                 if (_error != null) ...[
                   Expanded(
@@ -160,11 +139,23 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
 
                   // Result — use local _meal, not state.scannedMeal
                 ] else if (_meal != null) ...[
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.file(
+                        widget.imageFile,
+                        height: 160,
+                        width: 160,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        _meal!.name,
+                        _meal!.name.capitalizeFirst(),
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -172,7 +163,7 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  30.kH,
                   Text(
                     _meal!.calories.toStringAsFixed(0),
                     style: const TextStyle(
@@ -189,6 +180,7 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
 
                   const SizedBox(height: 30),
                   _FoodMacros(meal: _meal!),
+                  const SizedBox(height: 30),
                 ],
               ],
             ),
@@ -207,50 +199,81 @@ class _FoodMacros extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: pagePadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: AppColors.kWhite,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.kgrey.withValues(alpha: 0.3)),
+        ),
+        child: IntrinsicHeight(
+          child: Row(
+            children: [
+              _MacroItem(
+                value: '${meal.protein.toInt()}g',
+                label: 'Protein',
+                color: const Color(0xFF4A90D9),
+              ),
+              _Divider(),
+              _MacroItem(
+                value: '${meal.carbs.toInt()}g',
+                label: 'Carbs',
+                color: const Color(0xFFF5A623),
+              ),
+              _Divider(),
+              _MacroItem(
+                value: '${meal.fat.toInt()}g',
+                label: 'Fat',
+                color: const Color(0xFFE05C5C),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MacroItem extends StatelessWidget {
+  final String value;
+  final String label;
+  final Color color;
+
+  const _MacroItem({
+    required this.value,
+    required this.label,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 90.w,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.h),
-            decoration: BoxDecoration(
-              color: AppColors.kWhite,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.kgrey),
-            ),
-            child: Column(
-              children: [
-                Text(meal.protein.toInt().toString()),
-                Text('Protien'),
-              ],
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w600,
+              color: color,
             ),
           ),
-          Container(
-            width: 90.w,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.h),
-            decoration: BoxDecoration(
-              color: AppColors.kWhite,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.kgrey),
-            ),
-            child: Column(
-              children: [Text(meal.carbs.toInt().toString()), Text('Carbs')],
-            ),
-          ),
-          Container(
-            width: 90.w,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2.h),
-            decoration: BoxDecoration(
-              color: AppColors.kWhite,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.kgrey),
-            ),
-            child: Column(
-              children: [Text(meal.fat.toInt().toString()), Text('Fats')],
-            ),
-          ),
+          const SizedBox(height: 4),
+          Text(label, style: TextStyle(fontSize: 14, color: Colors.grey[500])),
         ],
       ),
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 0.5,
+      height: double.infinity,
+      color: Colors.grey[300],
     );
   }
 }

@@ -7,9 +7,9 @@ import 'package:cal_scanner/features/onboarding/presentation/screens/widgets/cal
 import 'package:cal_scanner/features/onboarding/presentation/screens/widgets/gender_widget.dart';
 import 'package:cal_scanner/features/onboarding/presentation/screens/widgets/health_goal_widget.dart';
 import 'package:cal_scanner/features/onboarding/presentation/screens/widgets/height_widget.dart';
-import 'package:cal_scanner/imports/packages_imports.dart';
 import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/routes/app_routes.dart';

@@ -16,8 +16,9 @@ class FoodLogState {
   final File? selectedImage;
   final bool isScanning; // NEW
   final FoodItem? scannedMeal;
+  final DateTime selectedDate;
 
-  const FoodLogState({
+  FoodLogState({
     this.meals = const [],
     this.totalCalories = 0,
     this.totalProtein = 0,
@@ -30,7 +31,8 @@ class FoodLogState {
     this.selectedImage,
     this.scannedMeal,
     this.isScanning = false,
-  });
+    DateTime? selectedDate,
+  }) : selectedDate = selectedDate ?? DateTime.now();
 
   FoodLogState copyWith({
     List<FoodItem>? meals,
@@ -45,8 +47,9 @@ class FoodLogState {
     File? selectedImage,
     bool? isScanning,
     FoodItem? scannedMeal,
-    bool clearScannedMeal = false, // <-- add this
-    bool clearError = false, // <-- and this
+    bool clearScannedMeal = false,
+    bool clearError = false,
+    DateTime? selectedDate,
   }) {
     return FoodLogState(
       meals: meals ?? this.meals,
@@ -61,6 +64,7 @@ class FoodLogState {
       selectedImage: selectedImage ?? this.selectedImage,
       isScanning: isScanning ?? this.isScanning,
       scannedMeal: clearScannedMeal ? null : scannedMeal ?? this.scannedMeal,
+      selectedDate: selectedDate ?? this.selectedDate,
     );
   }
 }

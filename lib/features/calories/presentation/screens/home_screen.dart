@@ -1,11 +1,15 @@
+// home_screen.dart
+import 'dart:async';
+
 import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_cubit.dart';
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_state.dart';
-import 'package:cal_scanner/imports/imports.dart';
+import 'package:cal_scanner/features/calories/presentation/widgets/weekly_date_picker.dart';
+import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/daily_tracker.dart';
 import '../widgets/meal_list.dart';
 
@@ -22,97 +26,67 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calorie Tracker'),
+        title: Text(
+          'Calorie Tracker',
+          style: AppTypography.displaySmall.copyWith(fontSize: 19.sp),
+        ),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
-          child: Padding(
-            padding: pagePadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Today's trackers",
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                SizedBox(height: 16),
-                BlocListener<FoodLogCubit, FoodLogState>(
-                  listener: (context, state) {
-                    if (state.successMessage != null || state.error != null) {
-                      final isError = state.error != null;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          duration: Duration(seconds: 2),
-                          backgroundColor: isError
-                              ? Colors.red[100]
-                              : Colors.green[100],
-                          behavior: SnackBarBehavior.floating,
-                          margin: EdgeInsets.all(16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          content: Row(
-                            children: [
-                              Icon(
-                                isError ? Icons.error : Icons.check_circle,
-                                color: isError ? Colors.red : Colors.green,
-                              ),
-                              SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  state.error ?? state.successMessage ?? '',
-                                  style: TextStyle(
-                                    color: isError
-                                        ? Colors.red[900]
-                                        : Colors.green[900],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: BlocBuilder<FoodLogCubit, FoodLogState>(
-                    builder: (context, state) {
-                      if (state.isLoading) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 24),
-                          DailyTracker(
-                            calories: state.totalCalories,
-                            protein: state.totalProtein,
-                            carbs: state.totalCarbs,
-                            fat: state.totalFat,
-                          ),
-                          SizedBox(height: 30.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Meals',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              Text(
-                                '${state.meals.length.toString()} items',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          MealList(meals: state.meals),
-                        ],
-                      );
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // ── DATE PICKER ──────────────────────────────────────────────
+              BlocBuilder<FoodLogCubit, FoodLogState>(
+                builder: (context, state) {
+                  return WeekDatePicker(
+                    selectedDate: state.selectedDate,
+                    onDateSelected: (date) {
+                      context.read<FoodLogCubit>().selectDate(date);
                     },
-                  ),
-                ),
-              ],
-            ),
+                  );
+                },
+              ),
+
+              // ────────────────────────────────────────────────────────────
+              BlocBuilder<FoodLogCubit, FoodLogState>(
+                builder: (context, state) {
+                  if (state.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 24),
+                      DailyTracker(
+                        calories: state.totalCalories,
+                        protein: state.totalProtein,
+                        carbs: state.totalCarbs,
+                        fat: state.totalFat,
+                      ),
+                      SizedBox(height: 30.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Meals',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          Text(
+                            '${state.meals.length} items',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ).paddingSymmetric(horizontal: 20.w),
+                      const SizedBox(height: 16),
+                      MealList(meals: state.meals),
+                    ],
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -123,3 +97,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+// ─── Week Date Picker Widget ──────────────────────────────────────────────────

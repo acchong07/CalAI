@@ -1,6 +1,6 @@
-import 'package:cal_scanner/imports/imports.dart';
 import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class MacroIndicator extends StatelessWidget {

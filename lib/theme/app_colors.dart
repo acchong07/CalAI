@@ -5,6 +5,8 @@ class AppColors {
   static Color kLightGrey = Color.fromARGB(15, 66, 66, 66);
 
   static Color kBlack = Color.fromARGB(196, 0, 0, 0);
+  static Color kOrange = Colors.orange;
+
   static Color kPureBlack = Colors.black;
 
   static Color kWhite = Color.fromARGB(255, 255, 255, 255);

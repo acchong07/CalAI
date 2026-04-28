@@ -1,12 +1,15 @@
 import 'package:cal_scanner/core/routes/router.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/calories/data/repositories/food_repository.dart';
 import 'features/calories/data/services/food_service.dart';
 import 'features/onboarding/presentation/cubit/onboarding_cubit.dart';
-import 'imports/imports.dart';
 import 'features/calories/presentation/cubit/food_log_cubit.dart';
 import 'theme/app_typography.dart';
 import 'theme/theme.dart';
