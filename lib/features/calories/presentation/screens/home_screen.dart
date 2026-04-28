@@ -5,6 +5,7 @@ import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_cubit.dart';
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_state.dart';
 import 'package:cal_scanner/features/calories/presentation/widgets/weekly_date_picker.dart';
+import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,8 +92,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.kOrange,
         onPressed: () => context.read<FoodLogCubit>().pickAndScanImage(context),
-        child: Icon(CupertinoIcons.camera, size: 30.sp),
+        child: Icon(
+          CupertinoIcons.camera_viewfinder,
+          size: 30.sp,
+          color: AppColors.kWhite,
+        ),
       ),
     );
   }

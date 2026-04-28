@@ -1,7 +1,13 @@
+import 'package:cal_scanner/core/extensions/num_extension.dart';
 import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/calories/presentation/screens/meal_detail_screen.dart';
+import 'package:cal_scanner/gen/assets.gen.dart';
+import 'package:cal_scanner/theme/app_colors.dart';
+import 'package:cal_scanner/theme/app_typography.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../data/models/food_item.dart';
 import '../cubit/food_log_cubit.dart';
 import 'meal_list_item.dart';
@@ -17,31 +23,58 @@ class MealList extends StatelessWidget {
     final sortedMeals = List.of(meals)
       ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
-    return ListView.separated(
-      padding: pagePadding,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: sortedMeals.length,
-      separatorBuilder: (context, index) => SizedBox(height: 12),
-      itemBuilder: (context, index) {
-        final meal = sortedMeals[index];
-        return GestureDetector(
-          onLongPress: () => _showDeleteDialog(context, meal),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MealDetailScreen(meal: meal),
-              ),
-            );
-          },
-          child: MealListItem(
-            meal: meal,
-            timeAgo: timeago.format(meal.timestamp),
-          ),
-        );
-      },
-    );
+    return meals.isEmpty
+        ? Padding(
+            padding: EdgeInsetsGeometry.only(top: 20.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  Assets.images.tray.path,
+                  height: 40.h,
+                  color: AppColors.kgrey,
+                ),
+                15.kH,
+                Padding(
+                  padding: pagePadding,
+                  child: Text(
+                    'Your plate is empty for now\nScan any meal to instantly track calories',
+                    textAlign: TextAlign.center,
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppColors.kgrey,
+                    ),
+                  ),
+                ),
+                Row(),
+              ],
+            ),
+          )
+        : ListView.separated(
+            padding: pagePadding,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: sortedMeals.length,
+            separatorBuilder: (context, index) => SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final meal = sortedMeals[index];
+              return GestureDetector(
+                onLongPress: () => _showDeleteDialog(context, meal),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MealDetailScreen(meal: meal),
+                    ),
+                  );
+                },
+                child: MealListItem(
+                  meal: meal,
+                  timeAgo: timeago.format(meal.timestamp),
+                ),
+              );
+            },
+          );
   }
 
   void _showDeleteDialog(BuildContext context, FoodItem meal) {

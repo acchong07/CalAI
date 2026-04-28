@@ -1,7 +1,13 @@
+import 'package:cal_scanner/core/extensions/capital_first_extension.dart';
+import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_cubit.dart';
+import 'package:cal_scanner/features/calories/presentation/widgets/macros_card.dart';
 import 'package:cal_scanner/theme/app_colors.dart';
-import 'package:flutter/material.dart';
+import 'package:cal_scanner/theme/app_typography.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' hide VerticalDivider;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../calories/data/models/food_item.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -19,13 +25,13 @@ class MealDetailScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text('Cancel', style: TextStyle(color: Colors.black)),
           ),
           TextButton(
             onPressed: () {
               context.read<FoodLogCubit>().deleteMeal(meal);
               Navigator.pop(context); // Close the dialog
-              Navigator.pop(context); // Navigate back to the meal list
+              Navigator.pop(context);
             },
             child: Text('Delete', style: TextStyle(color: Colors.red)),
           ),
@@ -39,7 +45,7 @@ class MealDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.kScaffold,
       appBar: AppBar(
-        title: Text(meal.name, style: TextStyle(color: Colors.black)),
+        leadingWidth: 70.w,
         centerTitle: true,
         backgroundColor: AppColors.kScaffold,
         iconTheme: IconThemeData(color: Colors.black),
@@ -54,65 +60,103 @@ class MealDetailScreen extends StatelessWidget {
             ),
             child: const Icon(Icons.arrow_back),
           ),
-        ),
+        ).paddingOnly(left: 10),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete, color: Colors.red),
+            icon: Icon(CupertinoIcons.delete, color: Colors.red),
             onPressed: () => _deleteMeal(context),
-          ),
+          ).paddingOnly(right: 10),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (meal.imageUrl != null)
-              Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    meal.imageUrl!,
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12.0),
+                child: Image.network(
+                  meal.imageUrl!,
+                  height: 180,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
-            SizedBox(height: 16),
+            if (meal.imageUrl != null) SizedBox(height: 24),
+
+            // Large calorie display
             Text(
-              'Details',
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              meal.name.capitalizeFirst(),
+              style: AppTypography.headlineMedium,
             ),
-            SizedBox(height: 8),
-            DetailListItem(
-              icon: Icons.local_fire_department,
-              label: 'Calories',
-              value: '${meal.calories.toStringAsFixed(1)} kcal',
+            SizedBox(height: 30),
+
+            Text(
+              meal.calories.toStringAsFixed(0),
+              style: TextStyle(
+                fontSize: 80,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+                height: 1.0,
+              ),
             ),
-            DetailListItem(
-              icon: Icons.fitness_center,
-              label: 'Protein',
-              value: '${meal.protein.toStringAsFixed(1)} g',
+            SizedBox(height: 4),
+            Text(
+              'calories',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[500],
+                fontWeight: FontWeight.w400,
+              ),
             ),
-            DetailListItem(
-              icon: Icons.grain,
-              label: 'Carbs',
-              value: '${meal.carbs.toStringAsFixed(1)} g',
+
+            SizedBox(height: 32),
+
+            // Macros card
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    blurRadius: 12,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MacroItem(
+                    value: '${meal.protein.toStringAsFixed(0)}g',
+                    label: 'Protein',
+                    color: Colors.blue,
+                  ),
+                  VerticalDivider(),
+
+                  MacroItem(
+                    value: '${meal.carbs.toStringAsFixed(0)}g',
+                    label: 'Carbs',
+                    color: Colors.orange,
+                  ),
+                  VerticalDivider(),
+                  MacroItem(
+                    value: '${meal.fat.toStringAsFixed(0)}g',
+                    label: 'Fat',
+                    color: Colors.redAccent,
+                  ),
+                ],
+              ),
             ),
-            DetailListItem(
-              icon: Icons.oil_barrel,
-              label: 'Fat',
-              value: '${meal.fat.toStringAsFixed(1)} g',
-            ),
-            DetailListItem(
-              icon: Icons.scale,
-              label: 'Quantity',
-              value: '${meal.quantity.toStringAsFixed(1)} g',
-            ),
-            DetailListItem(
+
+            SizedBox(height: 32),
+
+            // Additional details
+            _DetailRow(
               icon: Icons.access_time,
               label: 'Logged',
               value: timeago.format(meal.timestamp),
@@ -124,13 +168,12 @@ class MealDetailScreen extends StatelessWidget {
   }
 }
 
-class DetailListItem extends StatelessWidget {
+class _DetailRow extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
 
-  const DetailListItem({
-    super.key,
+  const _DetailRow({
     required this.icon,
     required this.label,
     required this.value,
@@ -139,17 +182,17 @@ class DetailListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         children: [
-          Icon(icon, size: 28, color: Colors.blue),
-          SizedBox(width: 16),
+          Icon(icon, size: 22, color: AppColors.kOrange),
+          SizedBox(width: 14),
           Expanded(
             child: Text(
               label,
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
                 color: Colors.black87,
               ),
             ),
@@ -157,9 +200,9 @@ class DetailListItem extends StatelessWidget {
           Text(
             value,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.w400,
-              color: Colors.grey[700],
+              color: Colors.grey[600],
             ),
           ),
         ],

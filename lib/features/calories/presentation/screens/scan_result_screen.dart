@@ -2,11 +2,14 @@ import 'dart:io';
 import 'package:cal_scanner/core/extensions/capital_first_extension.dart';
 import 'package:cal_scanner/core/extensions/num_extension.dart';
 import 'package:cal_scanner/core/extensions/widget_extension.dart';
+import 'package:cal_scanner/features/calories/presentation/widgets/macros_card.dart';
 
 import 'package:cal_scanner/theme/app_colors.dart';
-import 'package:flutter/material.dart';
+import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' hide VerticalDivider;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../data/models/food_item.dart';
 import '../cubit/food_log_cubit.dart';
 import '../cubit/food_log_state.dart';
@@ -144,8 +147,8 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                       borderRadius: BorderRadius.circular(16),
                       child: Image.file(
                         widget.imageFile,
-                        height: 160,
-                        width: 160,
+                        height: 150.h,
+                        width: 130.w,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -180,7 +183,48 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
 
                   const SizedBox(height: 30),
                   _FoodMacros(meal: _meal!),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 40),
+                  Padding(
+                    padding: pagePadding * 2,
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '~  ',
+                            style: AppTypography.bodyLarge.copyWith(
+                              color: Colors.orange,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Values are ',
+                            style: AppTypography.headlineSmall.copyWith(
+                              color: AppColors.kBlack,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'AI-powered estimates  ',
+                            style: AppTypography.headlineSmall.copyWith(
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '\n& closely reflect real nutrition data.',
+                            style: AppTypography.bodySmall.copyWith(
+                              fontSize: 13,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '  ~',
+                            style: AppTypography.bodyLarge.copyWith(
+                              color: Colors.orange,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ],
             ),
@@ -209,19 +253,19 @@ class _FoodMacros extends StatelessWidget {
         child: IntrinsicHeight(
           child: Row(
             children: [
-              _MacroItem(
+              MacroItem(
                 value: '${meal.protein.toInt()}g',
                 label: 'Protein',
                 color: const Color(0xFF4A90D9),
               ),
-              _Divider(),
-              _MacroItem(
+              VerticalDivider(),
+              MacroItem(
                 value: '${meal.carbs.toInt()}g',
                 label: 'Carbs',
                 color: const Color(0xFFF5A623),
               ),
-              _Divider(),
-              _MacroItem(
+              VerticalDivider(),
+              MacroItem(
                 value: '${meal.fat.toInt()}g',
                 label: 'Fat',
                 color: const Color(0xFFE05C5C),
@@ -230,50 +274,6 @@ class _FoodMacros extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _MacroItem extends StatelessWidget {
-  final String value;
-  final String label;
-  final Color color;
-
-  const _MacroItem({
-    required this.value,
-    required this.label,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(label, style: TextStyle(fontSize: 14, color: Colors.grey[500])),
-        ],
-      ),
-    );
-  }
-}
-
-class _Divider extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 0.5,
-      height: double.infinity,
-      color: Colors.grey[300],
     );
   }
 }
