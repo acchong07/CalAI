@@ -8,7 +8,6 @@ import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide VerticalDivider;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../calories/data/models/food_item.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
