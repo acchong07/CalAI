@@ -16,9 +16,9 @@ Cal AI is a Flutter mobile app that uses artificial intelligence to make calorie
 
 ---
 
-## ✨ Features
+## Features
 
-- **AI Meal Recognition** — Describe your meal in plain text or snap a photo, and Cal AI identifies the food and estimates calories automatically.
+- **AI Meal Recognition** — Snap a photo of your food, Cal AI identifies the food and estimates calories automatically.
 - **Daily Calorie Dashboard** — See a clean summary of your daily intake vs. your personal calorie goal.
 - **Macro Breakdown** — Track proteins, carbohydrates, and fats alongside total calories.
 - **Meal History Log** — Browse a full history of logged meals with timestamps and nutritional details.
@@ -28,7 +28,7 @@ Cal AI is a Flutter mobile app that uses artificial intelligence to make calorie
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -36,16 +36,13 @@ Make sure you have the following installed before running Cal AI:
 
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (v3.0 or higher)
 - [Dart](https://dart.dev/get-dart) (comes bundled with Flutter)
-- [Android Studio](https://developer.android.com/studio) or [Xcode](https://developer.apple.com/xcode/) (for emulator/simulator)
-- A physical device or emulator running Android 6.0+ or iOS 13+
 
 ### Installation
 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/your-username/cal-ai.git
-   cd cal-ai
+   git clone https://github.com/junaidjamel/cal_scanner
    ```
 
 2. **Install dependencies**
@@ -56,7 +53,7 @@ Make sure you have the following installed before running Cal AI:
 
 3. **Set up environment variables**
 
-   Create a `.env` file in the root directory and add your API keys:
+   Go in `.env` file that is in the root directory & add your API keys:
 
    ```env
    GROQ_API_KEY=your_api_key_here
@@ -66,13 +63,6 @@ Make sure you have the following installed before running Cal AI:
 
    ```bash
    flutter run
-   ```
-
-   To run on a specific device:
-
-   ```bash
-   flutter run -d android   # Android
-   flutter run -d ios       # iOS
    ```
 
 ### Build for Release
@@ -93,7 +83,7 @@ flutter build ios --release
 | ---------------- | ------------------- |
 | Framework        | Flutter (Dart)      |
 | AI / NLP         | Grok AI             |
-| State Management | _Bloc_              |
+| State Management | _Cubit_             |
 | Local Storage    | _Shared-Preference_ |
 | UI Components    | Material Design 3   |
 
