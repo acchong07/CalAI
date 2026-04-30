@@ -2,15 +2,15 @@
 
 > Track what you eat. Understand your nutrition. Powered by AI.
 
-Cal AI is a Flutter mobile app that uses artificial intelligence to make calorie tracking effortless. Simply describe or photograph your meal, and Cal AI instantly estimates nutritional information — no manual logging required.
+Cal AI is a Flutter mobile app that uses artificial intelligence to make calorie tracking effortless. Photograph your meal, and Cal AI instantly estimates nutritional information — no manual logging required.
 
 ---
 
 ## 📸 Screenshots
 
-|    Home Screen     |      Meal Log      | Nutrition Summary  |
-| :----------------: | :----------------: | :----------------: |
-| _(Add screenshot)_ | _(Add screenshot)_ | _(Add screenshot)_ |
+|          Home Screen          |      Meal Log      | Nutrition Summary  |
+| :---------------------------: | :----------------: | :----------------: |
+| _(assets/screenshots/o1.png)_ | _(Add screenshot)_ | _(Add screenshot)_ |
 
 > 💡 **Tip:** Drop your screenshots into a `/screenshots` folder and update the paths above.
 
