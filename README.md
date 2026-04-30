@@ -1,17 +1,38 @@
-# 🥗 Cal AI — AI-Powered Calorie Tracker
+<div align="center">
 
-> Track what you eat. Understand your nutrition. Powered by AI.
+<br>
+
+# Cal AI
+
+**AI-Powered Calorie Tracker for Android & iOS**
+
+Track what you eat. Understand your nutrition. Powered by AI.
+
+<br>
+
+![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?style=flat-square&logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?style=flat-square&logo=dart&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-10B981?style=flat-square)
+![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-lightgrey?style=flat-square)
+
+<br>
+
+</div>
+
+---
+
+## Overview
 
 Cal AI is a Flutter mobile app that uses artificial intelligence to make calorie tracking effortless. Photograph your meal, and Cal AI instantly estimates nutritional information — no manual logging required.
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 <table>
   <tr>
-    <th align="center">Onboarding Screens</th>
-    <th align="center">Calories Log & Track</th>
+    <th align="center">Onboarding</th>
+    <th align="center">Calorie Log & Tracking</th>
   </tr>
   <tr>
     <td align="center">
@@ -33,15 +54,31 @@ Cal AI is a Flutter mobile app that uses artificial intelligence to make calorie
   </tr>
 </table>
 
+---
+
 ## Features
 
-- **AI Meal Recognition** — Snap a photo of your food, Cal AI identifies the food and estimates calories automatically.
-- **Daily Calorie Dashboard** — See a clean summary of your daily intake vs. your personal calorie goal.
-- **Macro Breakdown** — Track proteins, carbohydrates, and fats alongside total calories.
-- **Meal History Log** — Browse a full history of logged meals with timestamps and nutritional details.
-- **Personalized Goals** — Set custom calorie and macro targets based on your health goals.
-- **Instant Nutritional Insights** — Get AI-generated tips and insights based on your eating patterns.
-- **Lightweight & Fast** — Built with Flutter for a smooth, native experience on both Android and iOS.
+| Feature                     | Description                                                                                 |
+| --------------------------- | ------------------------------------------------------------------------------------------- |
+| **AI Meal Recognition**     | Snap a photo of your food — Cal AI identifies the item and estimates calories automatically |
+| **Daily Calorie Dashboard** | Clean summary of your daily intake vs your personal calorie goal                            |
+| **Macro Breakdown**         | Track proteins, carbohydrates, and fats alongside total calories                            |
+| **Meal History Log**        | Full history of logged meals with timestamps and nutritional details                        |
+| **Personalized Goals**      | Set custom calorie and macro targets based on your health goals                             |
+| **Nutritional Insights**    | AI-generated tips based on your eating patterns                                             |
+| **Lightweight & Fast**      | Smooth, native experience on both Android and iOS                                           |
+
+---
+
+## Tech Stack
+
+| Layer            | Technology         |
+| ---------------- | ------------------ |
+| Framework        | Flutter (Dart)     |
+| AI / NLP         | Groq AI            |
+| State Management | Cubit              |
+| Local Storage    | Shared Preferences |
+| UI Components    | Material Design 3  |
 
 ---
 
@@ -49,54 +86,40 @@ Cal AI is a Flutter mobile app that uses artificial intelligence to make calorie
 
 ### Prerequisites
 
-Make sure you have the following installed before running Cal AI:
-
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) (v3.0 or higher)
-- [Dart](https://dart.dev/get-dart) (comes bundled with Flutter)
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) v3.0 or higher
+- [Dart](https://dart.dev/get-dart) — bundled with Flutter
 
 ### Installation
 
-1. **Clone the repository**
+**1. Clone the repository**
 
-   ```bash
-   git clone https://github.com/junaidjamel/cal_scanner
-   ```
+```bash
+git clone https://github.com/junaidjamel/cal_scanner
+```
 
-2. **Install dependencies**
+**2. Install dependencies**
 
-   ```bash
-   flutter pub get
-   ```
+```bash
+flutter pub get
+```
 
-3. **Set up environment variables**
+**3. Configure environment variables**
 
-   Go in `.env` file that is in the root directory & add your API keys:
+Add your API key to the `.env` file in the root directory:
 
-   ```env
-   GROQ_API_KEY=your_api_key_here
-   ```
+```env
+GROQ_API_KEY=your_api_key_here
+```
 
-4. **Run the app**
+**4. Run the app**
 
-   ```bash
-   flutter run
-   ```
-
----
-
-## 🛠️ Tech Stack
-
-| Layer            | Technology          |
-| ---------------- | ------------------- |
-| Framework        | Flutter (Dart)      |
-| AI / NLP         | Grok AI             |
-| State Management | _Cubit_             |
-| Local Storage    | _Shared-Preference_ |
-| UI Components    | Material Design 3   |
+```bash
+flutter run
+```
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 cal-ai/
@@ -116,29 +139,33 @@ cal-ai/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! To get started:
+Contributions are welcome. To get started:
 
 1. Fork the repository
-2. Create a new branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
+2. Create a new branch — `git checkout -b feature/your-feature-name`
+3. Commit your changes — `git commit -m 'Add some feature'`
+4. Push to the branch — `git push origin feature/your-feature-name`
 5. Open a Pull Request
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## 👤 Author
+## Author
 
 **Junaid Jamel**
 
 - Email: junaidsupercoder@gmail.com
-- LinkedIn: [https://www.linkedin.com/in/junaid-jamel/](https://www.linkedin.com/in/junaid-jamel/)
+- LinkedIn: [linkedin.com/in/junaid-jamel](https://www.linkedin.com/in/junaid-jamel/)
 
 ---
+
+<div align="center">
+<sub>Built with Flutter &mdash; Cal AI &copy; Junaid Jamel</sub>
+</div>
