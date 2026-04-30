@@ -65,16 +65,6 @@ Make sure you have the following installed before running Cal AI:
    flutter run
    ```
 
-### Build for Release
-
-```bash
-# Android APK
-flutter build apk --release
-
-# iOS
-flutter build ios --release
-```
-
 ---
 
 ## 🛠️ Tech Stack
@@ -131,7 +121,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 **Junaid Jamel**
 
-- GitHub: [https://github.com/junaidjamel](https://github.com/junaidjamel)
 - Email: junaidsupercoder@gmail.com
+- LinkedIn: [https://www.linkedin.com/in/junaid-jamel/](https://www.linkedin.com/in/junaid-jamel/)
 
 ---
