@@ -2,6 +2,8 @@
 
 <br>
 
+ <img src="assets/images/splash.png" width="140"/>
+
 # Cal AI
 
 **AI-Powered Calorie Tracker for Android & iOS**
