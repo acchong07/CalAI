@@ -89,13 +89,13 @@ flutter build ios --release
 
 ## 🛠️ Tech Stack
 
-| Layer            | Technology            |
-| ---------------- | --------------------- |
-| Framework        | Flutter (Dart)        |
-| AI / NLP         | Grok AI ()            |
-| State Management | _(Bloc)_              |
-| Local Storage    | _(Shared-Preference)_ |
-| UI Components    | Material Design 3     |
+| Layer            | Technology          |
+| ---------------- | ------------------- |
+| Framework        | Flutter (Dart)      |
+| AI / NLP         | Grok AI             |
+| State Management | _Bloc_              |
+| Local Storage    | _Shared-Preference_ |
+| UI Components    | Material Design 3   |
 
 ---
 
