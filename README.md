@@ -15,20 +15,20 @@ Cal AI is a Flutter mobile app that uses artificial intelligence to make calorie
   </tr>
   <tr>
     <td align="center">
-      <img src="assets/screenshots/o1.png" width="100"/>
-      <img src="assets/screenshots/o2.png" width="100"/>
-      <img src="assets/screenshots/o3.png" width="100"/>
+      <img src="assets/screenshots/o1.png" width="140"/>
+      <img src="assets/screenshots/o2.png" width="140"/>
+      <img src="assets/screenshots/o3.png" width="140"/>
       <br/>
-      <img src="assets/screenshots/o4.png" width="100"/>
-      <img src="assets/screenshots/o5.png" width="100"/>
-      <img src="assets/screenshots/o6.png" width="100"/>
+      <img src="assets/screenshots/o4.png" width="140"/>
+      <img src="assets/screenshots/o5.png" width="140"/>
+      <img src="assets/screenshots/o6.png" width="140"/>
     </td>
     <td align="center">
-      <img src="assets/screenshots/h1.png" width="100"/>
-      <img src="assets/screenshots/h2.png" width="100"/>
+      <img src="assets/screenshots/h1.png" width="140"/>
+      <img src="assets/screenshots/h2.png" width="140"/>
       <br/>
-      <img src="assets/screenshots/h3.png" width="100"/>
-      <img src="assets/screenshots/h4.png" width="100"/>
+      <img src="assets/screenshots/h3.png" width="140"/>
+      <img src="assets/screenshots/h4.png" width="140"/>
     </td>
   </tr>
 </table>
