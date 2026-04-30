@@ -139,9 +139,9 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 👤 Author
 
-**Your Name**
+**Junaid Jamel**
 
-- GitHub: [@your-username](https://github.com/your-username)
-- Email: your@email.com
+- GitHub: [https://github.com/junaidjamel](https://github.com/junaidjamel)
+- Email: junaidsupercoder@gmail.com
 
 ---
