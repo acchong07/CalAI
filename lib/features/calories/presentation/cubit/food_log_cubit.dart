@@ -17,7 +17,7 @@ class FoodLogCubit extends Cubit<FoodLogState> {
       super(FoodLogState());
 
   Future<void> pickAndScanImage(BuildContext context) async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return;
 
     final image = File(pickedFile.path);
