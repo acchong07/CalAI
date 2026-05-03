@@ -31,7 +31,8 @@ class MealListItem extends StatelessWidget {
               children: [
                 Text(
                   meal.name.capitalizeFirst(),
-                  style: AppTypography.displaySmall.copyWith(fontSize: 18.sp),
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTypography.displaySmall.copyWith(fontSize: 16.sp),
                 ),
 
                 10.kH,

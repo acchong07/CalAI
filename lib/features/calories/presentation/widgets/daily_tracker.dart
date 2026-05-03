@@ -55,7 +55,10 @@ class _DailyTrackerState extends State<DailyTracker> {
           backgroundColor: AppColors.kPrimaryGrey,
           radius: 90.sp,
           lineWidth: 14.0,
-          percent: widget.calories / targetCalories,
+          percent: (widget.calories / targetCalories.toDouble()).clamp(
+            0.0,
+            1.0,
+          ),
           center: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

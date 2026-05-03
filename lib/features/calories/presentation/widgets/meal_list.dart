@@ -4,7 +4,6 @@ import 'package:cal_scanner/features/calories/presentation/screens/meal_detail_s
 import 'package:cal_scanner/gen/assets.gen.dart';
 import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:cal_scanner/theme/app_typography.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -70,7 +69,10 @@ class MealList extends StatelessWidget {
                 },
                 child: MealListItem(
                   meal: meal,
-                  timeAgo: timeago.format(meal.timestamp),
+                  timeAgo: timeago
+                      .format(meal.timestamp)
+                      .replaceAll(' minutes', ' min')
+                      .replaceAll(' minute', ' min'),
                 ),
               );
             },

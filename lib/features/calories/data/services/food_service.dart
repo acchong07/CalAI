@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import '../models/food_item.dart';
 
 class FoodService {
-  String get _apiKey => dotenv.env['GROQ_API_KEY'] ?? '';
+  String get _apiKey => dotenv.env['GROK_API_KEY'] ?? '';
 
   Future<Either<String, FoodItem>> detectFoodAndCalories(File imageFile) async {
     try {
