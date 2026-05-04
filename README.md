@@ -77,7 +77,7 @@ Cal AI is a Flutter mobile app that uses artificial intelligence to make calorie
 | Layer            | Technology         |
 | ---------------- | ------------------ |
 | Framework        | Flutter (Dart)     |
-| AI / NLP         | Groq AI            |
+| AI / NLP         | Grok AI            |
 | State Management | Cubit              |
 | Local Storage    | Shared Preferences |
 | UI Components    | Material Design 3  |
@@ -110,7 +110,7 @@ flutter pub get
 Add your API key to the `.env` file in the root directory:
 
 ```env
-GROQ_API_KEY=your_api_key_here
+GROK_API_KEY=your_api_key_here
 ```
 
 **4. Run the app**
