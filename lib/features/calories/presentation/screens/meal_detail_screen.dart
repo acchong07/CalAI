@@ -1,18 +1,18 @@
 import 'package:cal_scanner/app_widgets/buttons/back_button.dart';
 import 'package:cal_scanner/core/extensions/capital_first_extension.dart';
+import 'package:cal_scanner/core/extensions/context_extension.dart';
 import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_cubit.dart';
 import 'package:cal_scanner/features/calories/presentation/widgets/macros_card.dart';
-import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide VerticalDivider;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../calories/data/models/food_item.dart';
+import '../../domain/entities/food.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class MealDetailScreen extends StatelessWidget {
-  final FoodItem meal;
+  final Food meal;
 
   const MealDetailScreen({super.key, required this.meal});
 
@@ -43,11 +43,11 @@ class MealDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kScaffold,
+      backgroundColor: context.colors.surface,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: AppColors.kScaffold,
-        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: context.colors.surface,
+        iconTheme: IconThemeData(color: context.colors.onSurface),
         leading: AppBackButton(),
         actions: [
           IconButton(
@@ -173,7 +173,7 @@ class _DetailRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         children: [
-          Icon(icon, size: 22, color: AppColors.kOrange),
+          Icon(icon, size: 22, color: context.colors.primary),
           SizedBox(width: 14),
           Expanded(
             child: Text(
@@ -181,7 +181,7 @@ class _DetailRow extends StatelessWidget {
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
-                color: Colors.black87,
+                color: context.colors.onSurface,
               ),
             ),
           ),
@@ -190,7 +190,7 @@ class _DetailRow extends StatelessWidget {
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w400,
-              color: Colors.grey[600],
+              color: context.colors.onSurfaceVariant,
             ),
           ),
         ],

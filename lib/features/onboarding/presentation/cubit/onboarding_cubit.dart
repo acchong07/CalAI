@@ -1,13 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'onboarding_state.dart';
-import '../../data/local/preference_manager.dart';
-import '../../data/models/user_data.dart';
-import '../../../../../core/utils/calorie_calculator.dart';
+import '../../domain/usecases/calculate_goals.dart';
+import '../../domain/usecases/mark_onboarding_complete.dart';
+import '../../domain/usecases/save_user_data.dart';
 
 class OnboardingCubit extends Cubit<OnboardingState> {
-  OnboardingCubit() : super(const OnboardingState());
+  final CalculateGoals _calculateGoals;
+  final SaveUserData _saveUserData;
+  final MarkOnboardingComplete _markOnboardingComplete;
+
+  OnboardingCubit(
+    this._calculateGoals,
+    this._saveUserData,
+    this._markOnboardingComplete,
+  ) : super(const OnboardingState());
 
   void updateWeight(double value) => emit(state.copyWith(weight: value));
   void updateHeight(double value) => emit(state.copyWith(height: value));
@@ -27,58 +33,30 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     }
 
     final heightInCm = heightToCm(state.height!);
-    debugPrint('heightInCm: $heightInCm');
-    debugPrint('weight: ${state.weight}');
-    debugPrint('age: ${state.age}');
-    debugPrint('activityLevel: ${state.activityLevel}');
-    debugPrint('gender: ${state.gender}');
-    debugPrint('goal: ${state.userGoal}');
-
-    final maintenance = CalorieCalculator.fallbackEstimateCalories(
+    final calc = await _calculateGoals(
       weight: state.weight!,
-      height: heightInCm,
-      age: state.age!,
-      activityLevel: state.activityLevel,
-      gender: state.gender,
-    );
-
-    debugPrint('maintenance: $maintenance');
-
-    final adjusted = CalorieCalculator.calculateCaloriesBasedOnGoal(
-      maintenanceCalories: maintenance,
-      goal: state.userGoal,
-    );
-
-    final macros = CalorieCalculator.calculateMacroGoals(
-      calories: adjusted,
-      goal: state.userGoal,
-    );
-
-    emit(
-      state.copyWith(
-        estimatedCalories: adjusted,
-        proteinGoal: macros['proteinGoal']!.toDouble(),
-        fatGoal: macros['fatGoal']!.toDouble(),
-        carbsGoal: macros['carbsGoal']!.toDouble(),
-      ),
-    );
-
-    final userData = UserData(
-      weight: state.weight!,
-      height: heightInCm,
+      heightCm: heightInCm,
       age: state.age!,
       activityLevel: state.activityLevel,
       gender: state.gender,
       goal: state.userGoal,
-      estimatedCalories: adjusted,
-      proteinGoal: macros['proteinGoal']!,
-      fatGoal: macros['fatGoal']!,
-      carbsGoal: macros['carbsGoal']!,
     );
 
-    final prefs = await SharedPreferences.getInstance();
-    final prefManager = PreferenceManager(prefs);
-    await prefManager.saveUserData(userData);
-    await prefs.setBool('onboarding_complete', true);
+    await calc.match(
+      (l) async => emit(state.copyWith(error: l.message)),
+      (userData) async {
+        emit(
+          state.copyWith(
+            estimatedCalories: userData.estimatedCalories,
+            proteinGoal: userData.proteinGoal.toDouble(),
+            fatGoal: userData.fatGoal.toDouble(),
+            carbsGoal: userData.carbsGoal.toDouble(),
+            error: null,
+          ),
+        );
+        await _saveUserData(userData);
+        await _markOnboardingComplete();
+      },
+    );
   }
 }

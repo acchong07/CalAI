@@ -1,13 +1,13 @@
 import 'package:cal_scanner/core/extensions/capital_first_extension.dart';
+import 'package:cal_scanner/core/extensions/context_extension.dart';
 import 'package:cal_scanner/core/extensions/num_extension.dart';
-import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../data/models/food_item.dart';
+import '../../domain/entities/food.dart';
 
 class MealListItem extends StatelessWidget {
-  final FoodItem meal;
+  final Food meal;
   final String timeAgo;
 
   const MealListItem({super.key, required this.meal, required this.timeAgo});
@@ -17,8 +17,8 @@ class MealListItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8.h),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: AppColors.kgrey.withValues(alpha: .3)),
+        color: context.colors.surface,
+        border: Border.all(color: context.colors.outlineVariant),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(

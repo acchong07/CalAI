@@ -1,17 +1,17 @@
 import 'dart:io';
 import 'package:cal_scanner/app_widgets/buttons/back_button.dart';
 import 'package:cal_scanner/core/extensions/capital_first_extension.dart';
+import 'package:cal_scanner/core/extensions/context_extension.dart';
 import 'package:cal_scanner/core/extensions/num_extension.dart';
 import 'package:cal_scanner/core/extensions/widget_extension.dart';
 import 'package:cal_scanner/features/calories/presentation/widgets/macros_card.dart';
 
-import 'package:cal_scanner/theme/app_colors.dart';
 import 'package:cal_scanner/theme/app_typography.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide VerticalDivider;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../data/models/food_item.dart';
+import '../../domain/entities/food.dart';
 import '../cubit/food_log_cubit.dart';
 import '../cubit/food_log_state.dart';
 
@@ -25,8 +25,9 @@ class ScanResultScreen extends StatefulWidget {
 
 class _ScanResultScreenState extends State<ScanResultScreen> {
   bool _dialogShown = false;
-  FoodItem? _meal;
+  Food? _meal;
   String? _error;
+  bool _scanStarted = false;
 
   void _showDialog(BuildContext context) {
     _dialogShown = true;
@@ -68,6 +69,16 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _scanStarted) return;
+      _scanStarted = true;
+      context.read<FoodLogCubit>().addMealFromImage(widget.imageFile);
+    });
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final state = context.read<FoodLogCubit>().state;
@@ -76,6 +87,18 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
         if (mounted) _showDialog(context);
       });
     }
+  }
+
+  @override
+  void dispose() {
+    if (_dialogShown) {
+      try {
+        Navigator.of(context, rootNavigator: true).pop();
+      } catch (_) {
+        // no-op
+      }
+    }
+    super.dispose();
   }
 
   @override
@@ -99,9 +122,9 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: AppColors.kScaffold,
+          backgroundColor: context.colors.surface,
           appBar: AppBar(
-            backgroundColor: AppColors.kScaffold,
+            backgroundColor: context.colors.surface,
             leading: AppBackButton(),
             centerTitle: false,
           ),
@@ -134,11 +157,10 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                           icon: const Icon(Icons.camera_alt_outlined),
                           label: const Text('Retake'),
                         ),
+                        Row(),
                       ],
                     ),
                   ),
-
-                  // Result — use local _meal, not state.scannedMeal
                 ] else if (_meal != null) ...[
                   Center(
                     child: ClipRRect(
@@ -197,7 +219,7 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                           TextSpan(
                             text: 'Values are ',
                             style: AppTypography.headlineSmall.copyWith(
-                              color: AppColors.kBlack,
+                              color: context.colors.onSurface,
                             ),
                           ),
                           TextSpan(
@@ -234,7 +256,7 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
 }
 
 class _FoodMacros extends StatelessWidget {
-  final FoodItem meal;
+  final Food meal;
   const _FoodMacros({required this.meal});
 
   @override
@@ -244,9 +266,9 @@ class _FoodMacros extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
-          color: AppColors.kWhite,
+          color: context.colors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.kgrey.withValues(alpha: 0.3)),
+          border: Border.all(color: context.colors.outlineVariant),
         ),
         child: IntrinsicHeight(
           child: Row(

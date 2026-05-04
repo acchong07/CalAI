@@ -1,4 +1,3 @@
-import 'package:cal_scanner/core/routes/router.dart';
 import 'package:device_preview/device_preview.dart';
 
 import 'package:flutter/material.dart';
@@ -9,10 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'features/calories/data/repositories/food_repository.dart';
-import 'features/calories/data/services/food_service.dart';
-import 'features/onboarding/presentation/cubit/onboarding_cubit.dart';
+import 'core/di/service_locator.dart';
 import 'features/calories/presentation/cubit/food_log_cubit.dart';
+import 'features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'theme/app_typography.dart';
 import 'theme/theme.dart';
 
@@ -31,9 +29,7 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final showOnboarding = !(prefs.getBool('onboarding_complete') ?? false);
 
-  final foodService = FoodService();
-  final foodRepository = FoodRepository(foodService, prefs);
-  final appRouter = AppRouter(showOnboarding: showOnboarding, prefs: prefs);
+  await configureDependencies(prefs: prefs, showOnboarding: showOnboarding);
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -43,17 +39,15 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: false,
-      builder: (context) =>
-          MyApp(router: appRouter.router, foodRepository: foodRepository),
+      builder: (context) => MyApp(router: sl<GoRouter>()),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   final GoRouter router;
-  final FoodRepository foodRepository;
 
-  const MyApp({super.key, required this.router, required this.foodRepository});
+  const MyApp({super.key, required this.router});
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +58,8 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => FoodLogCubit(foodRepository)..loadDailyLog(),
-            ),
-            BlocProvider(create: (context) => OnboardingCubit()),
+            BlocProvider(create: (_) => sl<FoodLogCubit>()),
+            BlocProvider(create: (_) => sl<OnboardingCubit>()),
           ],
 
           child: MaterialApp.router(

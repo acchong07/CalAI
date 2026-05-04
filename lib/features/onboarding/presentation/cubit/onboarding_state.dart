@@ -10,6 +10,7 @@ class OnboardingState {
   final double proteinGoal;
   final double fatGoal;
   final double carbsGoal;
+  final String? error;
 
   const OnboardingState({
     this.weight,
@@ -22,6 +23,7 @@ class OnboardingState {
     this.proteinGoal = 0,
     this.fatGoal = 0,
     this.carbsGoal = 0,
+    this.error,
   });
 
   OnboardingState copyWith({
@@ -35,6 +37,7 @@ class OnboardingState {
     double? proteinGoal,
     double? fatGoal,
     double? carbsGoal,
+    String? error,
   }) {
     return OnboardingState(
       weight: weight ?? this.weight,
@@ -47,6 +50,7 @@ class OnboardingState {
       proteinGoal: proteinGoal ?? this.proteinGoal,
       fatGoal: fatGoal ?? this.fatGoal,
       carbsGoal: carbsGoal ?? this.carbsGoal,
+      error: error ?? this.error,
     );
   }
 }

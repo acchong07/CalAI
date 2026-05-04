@@ -1,5 +1,4 @@
 import 'package:cal_scanner/features/calories/presentation/screens/home_screen.dart';
-import 'package:cal_scanner/features/calories/presentation/screens/settings_screen.dart';
 import 'package:cal_scanner/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:cal_scanner/features/onboarding/presentation/screens/splash.dart';
 import 'package:go_router/go_router.dart';
@@ -30,13 +29,6 @@ class AppRouter {
         path: AppRoutes.main,
         name: AppRoutes.main,
         builder: (context, state) => const HomeScreen(), // ← no child needed
-        routes: [
-          GoRoute(
-            path: 'settings', // becomes /main/settings
-            name: AppRoutes.settings,
-            builder: (context, state) => const SettingsScreen(),
-          ),
-        ],
       ),
     ],
     redirect: (context, state) {

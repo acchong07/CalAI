@@ -1,42 +1,32 @@
 import 'dart:io';
 
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_state.dart';
-import 'package:cal_scanner/features/calories/presentation/screens/scan_result_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
-import '../../data/models/food_item.dart';
-import '../../data/repositories/food_repository.dart';
+
+import '../../domain/entities/food.dart';
+import '../../domain/usecases/add_food.dart';
+import '../../domain/usecases/delete_food.dart';
+import '../../domain/usecases/detect_food_from_image.dart';
+import '../../domain/usecases/get_daily_food_log.dart';
+import '../../domain/usecases/get_weekly_calories.dart';
+import '../../domain/usecases/update_food.dart';
 
 class FoodLogCubit extends Cubit<FoodLogState> {
-  final FoodRepository _repository;
-  final ImagePicker _picker;
+  final GetDailyFoodLog _getDailyFoodLog;
+  final GetWeeklyCalories _getWeeklyCalories;
+  final AddFood _addFood;
+  final DeleteFood _deleteFood;
+  final UpdateFood _updateFood;
+  final DetectFoodFromImage _detectFoodFromImage;
 
-  FoodLogCubit(this._repository, [ImagePicker? picker])
-    : _picker = picker ?? ImagePicker(),
-      super(FoodLogState());
-
-  Future<void> pickAndScanImage(BuildContext context) async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-    if (pickedFile == null) return;
-
-    final image = File(pickedFile.path);
-    emit(state.copyWith(selectedImage: image, isScanning: true));
-    if (context.mounted) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: this,
-            child: ScanResultScreen(imageFile: image),
-          ),
-        ),
-      );
-    }
-    await Future.delayed(const Duration(milliseconds: 300));
-
-    await addMealFromImage(image);
-  }
+  FoodLogCubit(
+    this._getDailyFoodLog,
+    this._getWeeklyCalories,
+    this._addFood,
+    this._deleteFood,
+    this._updateFood,
+    this._detectFoodFromImage,
+  ) : super(FoodLogState());
 
   // fetch data view date
 
@@ -47,45 +37,58 @@ class FoodLogCubit extends Cubit<FoodLogState> {
     await loadDailyLog();
   }
 
-  Future<void> loadDailyLog({FoodItem? preserveScannedMeal}) async {
+  Future<void> loadDailyLog({Food? preserveScannedMeal}) async {
     emit(state.copyWith(isLoading: true));
-    try {
-      final results = await Future.wait([
-        _repository.getDailyFoodLog(state.selectedDate),
-        _loadWeeklyData(),
-      ]);
+    final mealsResult = await _getDailyFoodLog(state.selectedDate);
+    final weeklyResult = await _getWeeklyCalories(endDate: DateTime.now());
 
-      final meals = results[0] as List<FoodItem>;
-      final weeklyData = results[1] as List<double>;
-      final totals = _calculateTotals(meals);
-
+    if (mealsResult.isLeft()) {
       emit(
         state.copyWith(
-          meals: meals,
-          totalCalories: totals['calories'],
-          totalProtein: totals['protein'],
-          totalCarbs: totals['carbs'],
-          totalFat: totals['fat'],
-          weeklyData: weeklyData,
+          error: mealsResult.fold((l) => l.message, (_) => null),
           isLoading: false,
-          scannedMeal: preserveScannedMeal ?? state.scannedMeal,
         ),
       );
-    } catch (e) {
-      emit(state.copyWith(error: e.toString(), isLoading: false));
+      return;
     }
+    if (weeklyResult.isLeft()) {
+      emit(
+        state.copyWith(
+          error: weeklyResult.fold((l) => l.message, (_) => null),
+          isLoading: false,
+        ),
+      );
+      return;
+    }
+
+    final meals = mealsResult.getOrElse((_) => const <Food>[]);
+    final weeklyData = weeklyResult.getOrElse((_) => const <double>[]);
+    final totals = _calculateTotals(meals);
+
+    emit(
+      state.copyWith(
+        meals: meals,
+        totalCalories: totals['calories'],
+        totalProtein: totals['protein'],
+        totalCarbs: totals['carbs'],
+        totalFat: totals['fat'],
+        weeklyData: weeklyData,
+        isLoading: false,
+        scannedMeal: preserveScannedMeal ?? state.scannedMeal,
+        clearError: true,
+      ),
+    );
   }
 
-  Future<void> addMeal(FoodItem meal) async {
-    try {
-      await _repository.addFoodItem(meal);
-      await loadDailyLog();
-    } catch (e) {
-      emit(state.copyWith(error: e.toString()));
-    }
+  Future<void> addMeal(Food meal) async {
+    final result = await _addFood(meal);
+    result.match(
+      (l) => emit(state.copyWith(error: l.message)),
+      (_) async => loadDailyLog(),
+    );
   }
 
-  Map<String, double> _calculateTotals(List<FoodItem> meals) {
+  Map<String, double> _calculateTotals(List<Food> meals) {
     return meals.fold(
       {'calories': 0.0, 'protein': 0.0, 'carbs': 0.0, 'fat': 0.0},
       (totals, meal) {
@@ -98,29 +101,14 @@ class FoodLogCubit extends Cubit<FoodLogState> {
     );
   }
 
-  Future<List<double>> _loadWeeklyData() async {
-    final now = DateTime.now();
-
-    // Fetch all 7 days in parallel instead of sequentially
-    final results = await Future.wait(
-      List.generate(7, (i) {
-        final date = now.subtract(Duration(days: 6 - i));
-        return _repository.getDailyFoodLog(date);
-      }),
-    );
-
-    return results
-        .map((meals) => meals.fold(0.0, (sum, meal) => sum + meal.calories))
-        .toList();
-  }
-
   Future<void> addMealFromImage(File image) async {
-    final result = await _repository.detectFoodFromImage(image);
+    emit(state.copyWith(isScanning: true, selectedImage: image));
+    final result = await _detectFoodFromImage(image);
     result.fold(
       (failure) {
         emit(
           state.copyWith(
-            error: failure,
+            error: failure.message,
             successMessage: null,
             isScanning: false,
           ),
@@ -135,7 +123,7 @@ class FoodLogCubit extends Cubit<FoodLogState> {
             successMessage: 'Food "${meal.name}" detected successfully',
           ),
         );
-        await _repository.addFoodItem(meal);
+        await _addFood(meal);
         await loadDailyLog(preserveScannedMeal: meal);
       },
     );
@@ -153,26 +141,28 @@ class FoodLogCubit extends Cubit<FoodLogState> {
         isLoading: state.isLoading,
         error: null,
         successMessage: null,
+        selectedImage: state.selectedImage,
+        isScanning: state.isScanning,
+        scannedMeal: state.scannedMeal,
+        selectedDate: state.selectedDate,
       ),
     );
   }
 
-  Future<void> deleteMeal(FoodItem meal) async {
-    try {
-      await _repository.deleteFoodItem(meal);
-      await loadDailyLog();
-    } catch (e) {
-      emit(state.copyWith(error: e.toString()));
-    }
+  Future<void> deleteMeal(Food meal) async {
+    final result = await _deleteFood(meal);
+    result.match(
+      (l) => emit(state.copyWith(error: l.message)),
+      (_) async => loadDailyLog(),
+    );
   }
 
-  Future<void> updateMeal(FoodItem meal) async {
-    try {
-      await _repository.updateFoodItem(meal);
-      await loadDailyLog();
-    } catch (e) {
-      emit(state.copyWith(error: e.toString()));
-    }
+  Future<void> updateMeal(Food meal) async {
+    final result = await _updateFood(meal);
+    result.match(
+      (l) => emit(state.copyWith(error: l.message)),
+      (_) async => loadDailyLog(),
+    );
   }
 
   // re-build the UI at midnight for changes if user has't restart the app or crashed

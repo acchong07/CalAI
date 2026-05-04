@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import '../../data/models/food_item.dart';
+import '../../domain/entities/food.dart';
 
 class FoodLogState {
-  final List<FoodItem> meals;
+  final List<Food> meals;
   final double totalCalories;
   final double totalProtein;
   final double totalCarbs;
@@ -15,7 +15,7 @@ class FoodLogState {
   // Image Picking
   final File? selectedImage;
   final bool isScanning; // NEW
-  final FoodItem? scannedMeal;
+  final Food? scannedMeal;
   final DateTime selectedDate;
 
   FoodLogState({
@@ -35,7 +35,7 @@ class FoodLogState {
   }) : selectedDate = selectedDate ?? DateTime.now();
 
   FoodLogState copyWith({
-    List<FoodItem>? meals,
+    List<Food>? meals,
     double? totalCalories,
     double? totalProtein,
     double? totalCarbs,
@@ -46,7 +46,7 @@ class FoodLogState {
     String? successMessage,
     File? selectedImage,
     bool? isScanning,
-    FoodItem? scannedMeal,
+    Food? scannedMeal,
     bool clearScannedMeal = false,
     bool clearError = false,
     DateTime? selectedDate,
