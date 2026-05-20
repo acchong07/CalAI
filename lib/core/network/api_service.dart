@@ -25,7 +25,7 @@ class ApiService {
       if (response.statusCode < 200 || response.statusCode >= 300) {
         return left(
           NetworkFailure(
-            'API error: ${response.statusCode}',
+            'API error: ${response.statusCode} - ${response.body}',
             cause: response.body,
           ),
         );
@@ -39,7 +39,7 @@ class ApiService {
         NetworkFailure('Unexpected response shape', cause: response.body),
       );
     } catch (e) {
-      return left(NetworkFailure('Network request failed', cause: e));
+      return left(NetworkFailure('Network request failed: $e', cause: e));
     }
   }
 }

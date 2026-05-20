@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/food_item.dart';
 import '../services/food_service.dart';
@@ -35,7 +35,7 @@ class FoodRepository {
     );
   }
 
-  Future<Either<String, FoodItem>> detectFoodFromImage(File image) async {
+  Future<Either<String, FoodItem>> detectFoodFromImage(XFile image) async {
     return await _foodService.detectFoodAndCalories(image);
   }
 

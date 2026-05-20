@@ -16,7 +16,7 @@ import 'theme/theme.dart';
 
 Future<void> _loadEnvironmentFile() async {
   try {
-    await dotenv.load(fileName: '.env');
+    await dotenv.load(fileName: 'env');
   } catch (e) {
     debugPrint('Error loading .env file: $e');
   }

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:cal_scanner/app_widgets/buttons/back_button.dart';
 import 'package:cal_scanner/core/extensions/capital_first_extension.dart';
 import 'package:cal_scanner/core/extensions/context_extension.dart';
@@ -11,12 +11,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide VerticalDivider;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../domain/entities/food.dart';
 import '../cubit/food_log_cubit.dart';
 import '../cubit/food_log_state.dart';
 
 class ScanResultScreen extends StatefulWidget {
-  final File imageFile;
+  final XFile imageFile;
   const ScanResultScreen({super.key, required this.imageFile});
 
   @override
@@ -28,6 +29,7 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
   Food? _meal;
   String? _error;
   bool _scanStarted = false;
+  Uint8List? _imageBytes;
 
   void _showDialog(BuildContext context) {
     _dialogShown = true;
@@ -71,6 +73,9 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
   @override
   void initState() {
     super.initState();
+    widget.imageFile.readAsBytes().then((bytes) {
+      if (mounted) setState(() => _imageBytes = bytes);
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || _scanStarted) return;
       _scanStarted = true;
@@ -165,12 +170,14 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                   Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image.file(
-                        widget.imageFile,
-                        height: 150.h,
-                        width: 130.w,
-                        fit: BoxFit.cover,
-                      ),
+                      child: _imageBytes != null
+                          ? Image.memory(
+                              _imageBytes!,
+                              height: 150.h,
+                              width: 130.w,
+                              fit: BoxFit.cover,
+                            )
+                          : SizedBox(height: 150.h, width: 130.w),
                     ),
                   ),
                   const SizedBox(height: 16),

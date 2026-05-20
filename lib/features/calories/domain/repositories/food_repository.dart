@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:fpdart/fpdart.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/error/failure.dart';
 import '../entities/food.dart';
@@ -11,7 +10,7 @@ abstract class FoodRepository {
   Future<Either<Failure, Unit>> deleteFood(Food food);
   Future<Either<Failure, Unit>> updateFood(Food food);
 
-  Future<Either<Failure, Food>> detectFoodFromImage(File image);
+  Future<Either<Failure, Food>> detectFoodFromImage(XFile image);
 
   Future<Either<Failure, List<double>>> getWeeklyCalories({
     required DateTime endDate,

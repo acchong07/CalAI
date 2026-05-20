@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 import '../../domain/entities/food.dart';
 
@@ -13,7 +13,7 @@ class FoodLogState {
   final String? error;
   final String? successMessage;
   // Image Picking
-  final File? selectedImage;
+  final XFile? selectedImage;
   final bool isScanning; // NEW
   final Food? scannedMeal;
   final DateTime selectedDate;
@@ -44,7 +44,7 @@ class FoodLogState {
     bool? isLoading,
     String? error,
     String? successMessage,
-    File? selectedImage,
+    XFile? selectedImage,
     bool? isScanning,
     Food? scannedMeal,
     bool clearScannedMeal = false,

@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:cal_scanner/features/calories/presentation/cubit/food_log_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../domain/entities/food.dart';
 import '../../domain/usecases/add_food.dart';
@@ -101,7 +100,7 @@ class FoodLogCubit extends Cubit<FoodLogState> {
     );
   }
 
-  Future<void> addMealFromImage(File image) async {
+  Future<void> addMealFromImage(XFile image) async {
     emit(state.copyWith(isScanning: true, selectedImage: image));
     final result = await _detectFoodFromImage(image);
     result.fold(

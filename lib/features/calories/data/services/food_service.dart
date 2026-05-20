@@ -1,18 +1,27 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 import '../models/food_item.dart';
 
 class FoodService {
-  String get _apiKey => dotenv.env['GROK_API_KEY'] ?? '';
-
-  Future<Either<String, FoodItem>> detectFoodAndCalories(File imageFile) async {
+  String get _apiKey {
     try {
-      if (!imageFile.existsSync()) {
-        return Left('File not found: ${imageFile.path}');
+      if (!dotenv.isInitialized) return '';
+      return dotenv.env['GROK_API_KEY'] ?? '';
+    } catch (_) {
+      return '';
+    }
+  }
+
+  Future<Either<String, FoodItem>> detectFoodAndCalories(XFile imageFile) async {
+    try {
+      if (_apiKey.isEmpty) {
+        try {
+          await dotenv.load(fileName: 'env');
+        } catch (_) {}
       }
 
       final imageBytes = await imageFile.readAsBytes();

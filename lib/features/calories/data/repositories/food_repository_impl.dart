@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:fpdart/fpdart.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../domain/entities/food.dart';
@@ -67,7 +66,7 @@ class FoodRepositoryImpl implements FoodRepository {
   }
 
   @override
-  Future<Either<Failure, Food>> detectFoodFromImage(File image) {
+  Future<Either<Failure, Food>> detectFoodFromImage(XFile image) {
     return _remote.detectFoodAndCalories(image);
   }
 

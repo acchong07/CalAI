@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:fpdart/fpdart.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/error/failure.dart';
 import '../entities/food.dart';
@@ -10,7 +9,7 @@ class DetectFoodFromImage {
   final FoodRepository _repo;
   DetectFoodFromImage(this._repo);
 
-  Future<Either<Failure, Food>> call(File image) {
+  Future<Either<Failure, Food>> call(XFile image) {
     return _repo.detectFoodFromImage(image);
   }
 }
